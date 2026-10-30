@@ -1,0 +1,121 @@
+[
+  {
+    "code": "CAI-01",
+    "nameEn": "Hadaeq Al Qubbah (Branch Area)",
+    "nameAr": "حدائق القبة (المنطقة المحيطة بالفرع)",
+    "fee": 15.0,
+    "timeMinutes": 20
+  },
+  {
+    "code": "CAI-02",
+    "nameEn": "Saray Al Qubbah & El Zeitoun",
+    "nameAr": "سراي القبة وحمامات القبة والزيتون",
+    "fee": 20.0,
+    "timeMinutes": 25
+  },
+  {
+    "code": "CAI-03",
+    "nameEn": "Abbaseya, Wayli & Demerdash",
+    "nameAr": "العباسية والوايلي والدمرداش",
+    "fee": 20.0,
+    "timeMinutes": 25
+  },
+  {
+    "code": "CAI-04",
+    "nameEn": "Heliopolis, Roxy & Korba",
+    "nameAr": "مصر الجديدة وروكسي والكوربة",
+    "fee": 25.0,
+    "timeMinutes": 30
+  },
+  {
+    "code": "CAI-05",
+    "nameEn": "Shoubra & El Sahel",
+    "nameAr": "شبرا والساحل وروض الفرج",
+    "fee": 25.0,
+    "timeMinutes": 30
+  },
+  {
+    "code": "CAI-06",
+    "nameEn": "Helmeyat El Zeitoun & Ain Shams",
+    "nameAr": "حلمية الزيتون وعين شمس الغربية",
+    "fee": 25.0,
+    "timeMinutes": 30
+  },
+  {
+    "code": "CAI-07",
+    "nameEn": "Matareya & Amiriya",
+    "nameAr": "المطرية والأميرية والسواح",
+    "fee": 20.0,
+    "timeMinutes": 25
+  },
+  {
+    "code": "CAI-08",
+    "nameEn": "Nasr City (Rabaa & Abbas)",
+    "nameAr": "مدينة نصر - رابعة وعباس ومكرم",
+    "fee": 35.0,
+    "timeMinutes": 35
+  },
+  {
+    "code": "CAI-09",
+    "nameEn": "Sheraton & New Nozha",
+    "nameAr": "مساكن شيراتون والنزهة الجديدة",
+    "fee": 35.0,
+    "timeMinutes": 35
+  },
+  {
+    "code": "CAI-10",
+    "nameEn": "Downtown Cairo & Tahrir",
+    "nameAr": "وسط البلد والتحرير وباب اللوق",
+    "fee": 30.0,
+    "timeMinutes": 35
+  },
+  {
+    "code": "CAI-11",
+    "nameEn": "Zamalek & Garden City",
+    "nameAr": "الزمالك وجاردن سيتي",
+    "fee": 35.0,
+    "timeMinutes": 40
+  },
+  {
+    "code": "CAI-12",
+    "nameEn": "Mohandessin, Dokki & Agouza",
+    "nameAr": "المهندسين والدقي والعجوزة",
+    "fee": 35.0,
+    "timeMinutes": 40
+  },
+  {
+    "code": "CAI-13",
+    "nameEn": "Maadi & Degla",
+    "nameAr": "المعادي ودجلة",
+    "fee": 45.0,
+    "timeMinutes": 45
+  },
+  {
+    "code": "CAI-14",
+    "nameEn": "Mokattam",
+    "nameAr": "المقطم والهضبة الوسطى",
+    "fee": 40.0,
+    "timeMinutes": 40
+  },
+  {
+    "code": "CAI-15",
+    "nameEn": "New Cairo - 5th Settlement",
+    "nameAr": "التجمع الخامس والقاهرة الجديدة",
+    "fee": 45.0,
+    "timeMinutes": 45
+  },
+  {
+    "code": "CAI-16",
+    "nameEn": "El Rehab & 1st Settlement",
+    "nameAr": "الرحاب والتجمع الأول",
+    "fee": 50.0,
+    "timeMinutes": 50
+  },
+  {
+    "code": "CAI-17",
+    "nameEn": "Madinaty & El Shorouk",
+    "nameAr": "مدينتي والشروق",
+    "fee": 65.0,
+    "timeMinutes": 55
+  }
+]
