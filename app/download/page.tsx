@@ -45,7 +45,7 @@ export default function DownloadAppPage() {
   function handleDownload() {
     setDownloading(true);
     const link = document.createElement("a");
-    link.href = "/downloads/elwagba-elshahia.apk";
+    link.href = "/api/download/apk";
     link.setAttribute("download", "elwagba-elshahia.apk");
     document.body.appendChild(link);
     link.click();
