@@ -131,6 +131,32 @@ export default function StorefrontPage() {
   // Auto-scrolling Carousel State
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isCarouselPaused, setIsCarouselPaused] = useState(false);
+  const [touchStart, setTouchStart] = useState<number | null>(null);
+  const [touchEnd, setTouchEnd] = useState<number | null>(null);
+
+  function handleTouchStart(e: React.TouchEvent) {
+    setTouchStart(e.targetTouches[0].clientX);
+  }
+
+  function handleTouchMove(e: React.TouchEvent) {
+    setTouchEnd(e.targetTouches[0].clientX);
+  }
+
+  function handleTouchEnd() {
+    if (touchStart === null || touchEnd === null) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 45;
+    const isRightSwipe = distance < -45;
+    if (isLeftSwipe) {
+      playSound("click");
+      setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+    } else if (isRightSwipe) {
+      playSound("click");
+      setCurrentSlide((prev) => (prev === 0 ? HERO_SLIDES.length - 1 : prev - 1));
+    }
+    setTouchStart(null);
+    setTouchEnd(null);
+  }
 
   // Cart & Order State
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -395,7 +421,7 @@ export default function StorefrontPage() {
         onMouseEnter={() => setIsCarouselPaused(true)}
         onMouseLeave={() => setIsCarouselPaused(false)}
       >
-        <div className="wagba-hero-container">
+        <div className="wagba-hero-container" onTouchStart={handleTouchStart} onTouchMove={handleTouchMove} onTouchEnd={handleTouchEnd}>
           {/* Horizontal Sliding Track (Smooth GLIDE across slides) */}
           <div
             className="wagba-hero-track"
@@ -548,6 +574,7 @@ export default function StorefrontPage() {
 
           {/* Left Arrow Button */}
           <button
+            className="carousel-arrow-btn"
             onClick={() => {
               playSound("click");
               setCurrentSlide((prev) => (prev === 0 ? HERO_SLIDES.length - 1 : prev - 1));
@@ -579,6 +606,7 @@ export default function StorefrontPage() {
 
           {/* Right Arrow Button */}
           <button
+            className="carousel-arrow-btn"
             onClick={() => {
               playSound("click");
               setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);

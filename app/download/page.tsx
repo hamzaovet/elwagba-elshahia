@@ -44,8 +44,8 @@ export default function DownloadAppPage() {
   function handleDownload() {
     setDownloading(true);
     const link = document.createElement("a");
-    link.href = "/api/download/apk";
-    link.setAttribute("download", "elwagba.apk");
+    link.href = "/downloads/elwagba-elshahia.apk";
+    link.setAttribute("download", "elwagba-elshahia.apk");
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -59,7 +59,7 @@ export default function DownloadAppPage() {
     if (navigator.share) {
       navigator.share({
         title: "تطبيق الوجبة الشهية للأندرويد",
-        text: "حمّل تطبيق الوجبة الشهية الرسمي للأندرويد واستمتع بأشهى الوافل والكيك والحلويات بأسرع تجربة طلب!",
+        text: "حمّل تطبيق الوجبة الشهية الرسمي للأندرويد واستمتع بأشهى المشويات والصواني والشاورما بأسرع تجربة طلب!",
         url: window.location.href,
       }).catch(() => {});
     } else {
