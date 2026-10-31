@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
-    <string name="app_name">Waffle House</string>
-    <string name="title_activity_main">Waffle House</string>
-    <string name="package_name">com.wafflehouse.cairo</string>
-    <string name="custom_url_scheme">com.wafflehouse.cairo</string>
+    <string name="app_name">الوجبة الشهية</string>
+    <string name="title_activity_main">الوجبة الشهية</string>
+    <string name="package_name">com.elwagba.elshahia</string>
+    <string name="custom_url_scheme">com.elwagba.elshahia</string>
 </resources>

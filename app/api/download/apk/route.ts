@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
-  // Direct link to the hosted APK in /downloads/elwagba-elshahia.apk
+  // Direct link to the hosted APK in /downloads/elwagba-elshahia.apk or GitHub release
   const downloadUrl =
     process.env.APK_DOWNLOAD_URL ||
     "/downloads/elwagba-elshahia.apk";

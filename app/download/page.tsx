@@ -13,7 +13,8 @@ import {
   CheckCircle2, 
   Share2, 
   ExternalLink, 
-  Sparkles 
+  Sparkles,
+  Flame
 } from "lucide-react";
 
 export default function DownloadAppPage() {
@@ -58,8 +59,8 @@ export default function DownloadAppPage() {
   function handleShare() {
     if (navigator.share) {
       navigator.share({
-        title: "تطبيق الوجبة الشهية للأندرويد",
-        text: "حمّل تطبيق الوجبة الشهية الرسمي للأندرويد واستمتع بأشهى المشويات والصواني والشاورما بأسرع تجربة طلب!",
+        title: "تطبيق مطعم الوجبة الشهية للأندرويد",
+        text: "حمّل تطبيق الوجبة الشهية الرسمي للأندرويد واستمتع بأشهى مشويات الشواية وصواني اللمة والشاورما السوري مع أسرع توصيل في 6 أكتوبر!",
         url: window.location.href,
       }).catch(() => {});
     } else {
@@ -74,8 +75,8 @@ export default function DownloadAppPage() {
       dir="rtl"
       style={{
         minHeight: "100vh",
-        background: "#F8F4EC",
-        color: "#2B170E",
+        background: "#FAF7F2",
+        color: "#24140D",
         fontFamily: "var(--font-cairo), system-ui, -apple-system, sans-serif",
         display: "flex",
         flexDirection: "column",
@@ -103,15 +104,15 @@ export default function DownloadAppPage() {
             display: "inline-flex",
             alignItems: "center",
             gap: "8px",
-            color: "#7E5E49",
+            color: "#6B4226",
             textDecoration: "none",
             fontSize: "13.5px",
             fontWeight: 700,
             background: "#FFFFFF",
-            border: "1px solid #E8DAC8",
+            border: "1px solid #E8DFD5",
             padding: "8px 18px",
             borderRadius: "100px",
-            boxShadow: "0 2px 6px rgba(43,23,14,0.03)",
+            boxShadow: "0 2px 6px rgba(36,20,13,0.04)",
           }}
         >
           <ChevronRight size={17} />
@@ -124,15 +125,15 @@ export default function DownloadAppPage() {
             display: "inline-flex",
             alignItems: "center",
             gap: "7px",
-            color: "#C6873E",
+            color: "#DC2626",
             background: "#FFFFFF",
-            border: "1px solid #E8DAC8",
+            border: "1px solid #E8DFD5",
             padding: "8px 16px",
             borderRadius: "100px",
             fontSize: "12.5px",
             fontWeight: 700,
             cursor: "pointer",
-            boxShadow: "0 2px 6px rgba(43,23,14,0.03)",
+            boxShadow: "0 2px 6px rgba(36,20,13,0.04)",
           }}
         >
           <Share2 size={15} />
@@ -146,11 +147,11 @@ export default function DownloadAppPage() {
           display: "inline-flex",
           alignItems: "center",
           gap: "8px",
-          background: "rgba(212, 149, 78, 0.12)",
-          border: "1px solid rgba(212, 149, 78, 0.35)",
+          background: "rgba(220, 38, 38, 0.08)",
+          border: "1px solid rgba(220, 38, 38, 0.3)",
           padding: "6px 18px",
           borderRadius: "100px",
-          color: "#C6873E",
+          color: "#DC2626",
           fontSize: "12px",
           fontWeight: 800,
           marginBottom: "16px",
@@ -168,26 +169,26 @@ export default function DownloadAppPage() {
           fontWeight: 900,
           textAlign: "center",
           marginBottom: "10px",
-          color: "#2B170E",
+          color: "#24140D",
           lineHeight: 1.25,
           zIndex: 10,
         }}
       >
-        حمّل تطبيق الوجبة الشهية الرسمي 🧇🍰
+        حمّل تطبيق مطعم الوجبة الشهية الرسمي 🍗🔥
       </h1>
       <p 
         style={{
-          color: "#7E5E49",
+          color: "#6B4226",
           fontSize: "clamp(14px, 2.5vw, 16px)",
           textAlign: "center",
-          maxWidth: "560px",
+          maxWidth: "580px",
           lineHeight: 1.6,
           marginBottom: "32px",
           zIndex: 10,
           fontWeight: 600,
         }}
       >
-        تجربة طلب فورية وسلسة لأشهى الوافل، الميني بانكيك، والموتشي، مع توصيل سريع لكافة مناطق القاهرة (فرع 6 أكتوبر - الحي الثاني).
+        تجربة طلب فورية وسلسة لأشهى مشويات الشواية، صواني اللمة والعيلة، والشاورما السوري المحمصة عالجريل، مع توصيل سريع لكافة أحياء 6 أكتوبر والشيخ زايد (فرع الحي الثاني - شارع جيل 2000).
       </p>
 
       {/* Auto Countdown Banner if triggered */}
@@ -219,10 +220,10 @@ export default function DownloadAppPage() {
           width: "100%",
           maxWidth: "880px",
           background: "#FFFFFF",
-          border: "1px solid #E8DAC8",
+          border: "1px solid #E8DFD5",
           borderRadius: "28px",
           padding: "36px 28px",
-          boxShadow: "0 20px 50px rgba(43, 23, 14, 0.06)",
+          boxShadow: "0 20px 50px rgba(36, 20, 13, 0.06)",
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(290px, 1fr))",
           gap: "36px",
@@ -237,8 +238,8 @@ export default function DownloadAppPage() {
             flexDirection: "column",
             alignItems: "center",
             textAlign: "center",
-            background: "#FAF6EE",
-            border: "1px solid #E8DAC8",
+            background: "#FAF7F2",
+            border: "1px solid #E8DFD5",
             borderRadius: "22px",
             padding: "24px 20px",
           }}
@@ -248,7 +249,7 @@ export default function DownloadAppPage() {
               display: "flex",
               alignItems: "center",
               gap: "7px",
-              color: "#C6873E",
+              color: "#DC2626",
               fontSize: "13px",
               fontWeight: 800,
               marginBottom: "14px",
@@ -263,13 +264,13 @@ export default function DownloadAppPage() {
               background: "#FFFFFF",
               padding: "12px",
               borderRadius: "18px",
-              border: "1px solid #E8DAC8",
-              boxShadow: "0 8px 24px rgba(43, 23, 14, 0.08)",
+              border: "1px solid #E8DFD5",
+              boxShadow: "0 8px 24px rgba(36, 20, 13, 0.08)",
               marginBottom: "16px",
             }}
           >
             <img 
-              src="/apk-qr.png" 
+              src="/wagba-apk-qr.png" 
               alt="QR Code لتحميل تطبيق الوجبة الشهية"
               style={{
                 width: "190px",
@@ -280,8 +281,8 @@ export default function DownloadAppPage() {
             />
           </div>
 
-          <p style={{ color: "#7E5E49", fontSize: "12.5px", maxWidth: "230px", lineHeight: 1.5 }}>
-            وجّه كاميرا هاتفك نحو الكود ليتم فتح صفحة التحميل وتحميل ملف التطبيق تلقائياً.
+          <p style={{ color: "#6B4226", fontSize: "12.5px", maxWidth: "230px", lineHeight: 1.5 }}>
+            وجّه كاميرا هاتفك نحو الكود ليتم فتح صفحة التحميل وتثبيت ملف التطبيق مباشرة.
           </p>
         </div>
 
@@ -289,13 +290,13 @@ export default function DownloadAppPage() {
         <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
           <div>
             <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "8px" }}>
-              <Smartphone size={24} style={{ color: "#C6873E" }} />
-              <h2 style={{ fontSize: "22px", fontWeight: 900, color: "#2B170E", margin: 0 }}>
-                نسخة الأندرويد المباشرة
+              <Smartphone size={24} style={{ color: "#DC2626" }} />
+              <h2 style={{ fontSize: "22px", fontWeight: 900, color: "#24140D", margin: 0 }}>
+                نسخة الأندرويد الرسمية المباشرة
               </h2>
             </div>
-            <p style={{ color: "#7E5E49", fontSize: "13px", margin: 0 }}>
-              حجم الملف: <strong>8.7 ميجابايت</strong> • متوافق مع كافة أجهزة Android 8.0 فما فوق
+            <p style={{ color: "#6B4226", fontSize: "13px", margin: 0 }}>
+              حجم الملف: <strong>10.4 ميجابايت</strong> • متوافق مع كافة أجهزة Android 8.0 فما فوق
             </p>
           </div>
 
@@ -306,7 +307,7 @@ export default function DownloadAppPage() {
             style={{
               background: downloading 
                 ? "#16a34a" 
-                : "linear-gradient(135deg, #D4954E 0%, #C6873E 100%)",
+                : "linear-gradient(135deg, #DC2626 0%, #B91C1C 100%)",
               color: "#FFFFFF",
               border: "none",
               borderRadius: "16px",
@@ -318,7 +319,7 @@ export default function DownloadAppPage() {
               alignItems: "center",
               justifyContent: "center",
               gap: "12px",
-              boxShadow: "0 12px 30px rgba(198, 135, 62, 0.35)",
+              boxShadow: "0 12px 30px rgba(220, 38, 38, 0.35)",
               transition: "all 0.25s ease",
             }}
           >
@@ -330,7 +331,7 @@ export default function DownloadAppPage() {
             ) : (
               <>
                 <Download size={22} />
-                <span>تحميل ملف التطبيق APK للأندرويد</span>
+                <span>تحميل ملف تطبيق الوجبة الشهية (APK)</span>
               </>
             )}
           </button>
@@ -338,11 +339,11 @@ export default function DownloadAppPage() {
           {/* Direct link fallback */}
           <div style={{ textAlign: "center" }}>
             <a 
-              href="https://github.com/hamzaovet/elwagba-house/releases/download/v1.0.5/elwagba.apk"
+              href="https://github.com/hamzaovet/elwagba-elshahia/releases/download/v1.0.0/elwagba-elshahia.apk"
               target="_blank"
               rel="noopener noreferrer"
               style={{
-                color: "#C6873E",
+                color: "#C2410C",
                 fontSize: "12.5px",
                 textDecoration: "underline",
                 display: "inline-flex",
@@ -359,20 +360,20 @@ export default function DownloadAppPage() {
           {/* Quick 3-Step Install Guide */}
           <div 
             style={{
-              background: "#FAF6EE",
-              border: "1px solid #E8DAC8",
+              background: "#FAF7F2",
+              border: "1px solid #E8DFD5",
               borderRadius: "16px",
               padding: "16px 18px",
             }}
           >
-            <h3 style={{ fontSize: "13.5px", fontWeight: 800, color: "#2B170E", marginBottom: "12px" }}>
+            <h3 style={{ fontSize: "13.5px", fontWeight: 800, color: "#24140D", marginBottom: "12px" }}>
               خطوات التثبيت السريعة (3 خطوات فقط):
             </h3>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "10px", fontSize: "12.5px", color: "#7E5E49" }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: "10px", fontSize: "12.5px", color: "#6B4226" }}>
               <div style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
                 <span style={{ 
-                  background: "linear-gradient(135deg, #D4954E, #C6873E)", 
+                  background: "linear-gradient(135deg, #DC2626, #B91C1C)", 
                   color: "#FFFFFF", 
                   width: "20px", 
                   height: "20px", 
@@ -385,12 +386,12 @@ export default function DownloadAppPage() {
                   flexShrink: 0,
                   marginTop: "1px"
                 }}>1</span>
-                <span>اضغط على زر <strong>تحميل ملف التطبيق APK</strong> أعلاه أو امسح كود QR.</span>
+                <span>اضغط على زر <strong>تحميل ملف تطبيق الوجبة الشهية</strong> أعلاه أو امسح كود QR.</span>
               </div>
 
               <div style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
                 <span style={{ 
-                  background: "linear-gradient(135deg, #D4954E, #C6873E)", 
+                  background: "linear-gradient(135deg, #DC2626, #B91C1C)", 
                   color: "#FFFFFF", 
                   width: "20px", 
                   height: "20px", 
@@ -408,7 +409,7 @@ export default function DownloadAppPage() {
 
               <div style={{ display: "flex", alignItems: "flex-start", gap: "10px" }}>
                 <span style={{ 
-                  background: "linear-gradient(135deg, #D4954E, #C6873E)", 
+                  background: "linear-gradient(135deg, #DC2626, #B91C1C)", 
                   color: "#FFFFFF", 
                   width: "20px", 
                   height: "20px", 
@@ -421,7 +422,7 @@ export default function DownloadAppPage() {
                   flexShrink: 0,
                   marginTop: "1px"
                 }}>3</span>
-                <span>افتح التطبيق واستمتع بأشهى وافل وحلويات وأسرع متابعة لأوردراتك! 🧇🍰</span>
+                <span>افتح التطبيق واستمتع بأشهى المشويات والصواني والشاورما وعروض الأسبوع الحصرية! 🍗🔥</span>
               </div>
             </div>
           </div>
@@ -443,22 +444,22 @@ export default function DownloadAppPage() {
         <div 
           style={{
             background: "#FFFFFF",
-            border: "1px solid #E8DAC8",
+            border: "1px solid #E8DFD5",
             borderRadius: "18px",
             padding: "20px",
             display: "flex",
             alignItems: "flex-start",
             gap: "14px",
-            boxShadow: "0 2px 8px rgba(43,23,14,0.03)",
+            boxShadow: "0 2px 8px rgba(36,20,13,0.03)",
           }}
         >
-          <div style={{ background: "rgba(212, 149, 78, 0.15)", padding: "10px", borderRadius: "12px", color: "#C6873E" }}>
+          <div style={{ background: "rgba(220, 38, 38, 0.1)", padding: "10px", borderRadius: "12px", color: "#DC2626" }}>
             <Zap size={22} />
           </div>
           <div>
-            <h4 style={{ fontSize: "14px", fontWeight: 800, color: "#2B170E", marginBottom: "4px" }}>سرعة استجابة فائقة</h4>
-            <p style={{ fontSize: "12px", color: "#7E5E49", lineHeight: 1.5 }}>
-              تصفح سلس للمنيو وأصناف الوافل والحلويات بدون الحاجة لفتح المتصفح في كل مرة.
+            <h4 style={{ fontSize: "14px", fontWeight: 800, color: "#24140D", marginBottom: "4px" }}>سرعة استجابة فائقة</h4>
+            <p style={{ fontSize: "12px", color: "#6B4226", lineHeight: 1.5 }}>
+              تصفح سلس للمنيو وأصناف الشواية والصواني والشاورما دون الحاجة لفتح المتصفح.
             </p>
           </div>
         </div>
@@ -466,22 +467,22 @@ export default function DownloadAppPage() {
         <div 
           style={{
             background: "#FFFFFF",
-            border: "1px solid #E8DAC8",
+            border: "1px solid #E8DFD5",
             borderRadius: "18px",
             padding: "20px",
             display: "flex",
             alignItems: "flex-start",
             gap: "14px",
-            boxShadow: "0 2px 8px rgba(43,23,14,0.03)",
+            boxShadow: "0 2px 8px rgba(36,20,13,0.03)",
           }}
         >
-          <div style={{ background: "rgba(212, 149, 78, 0.15)", padding: "10px", borderRadius: "12px", color: "#C6873E" }}>
+          <div style={{ background: "rgba(220, 38, 38, 0.1)", padding: "10px", borderRadius: "12px", color: "#DC2626" }}>
             <ShieldCheck size={22} />
           </div>
           <div>
-            <h4 style={{ fontSize: "14px", fontWeight: 800, color: "#2B170E", marginBottom: "4px" }}>شات خاص وآمن</h4>
-            <p style={{ fontSize: "12px", color: "#7E5E49", lineHeight: 1.5 }}>
-              محادثاتك مع المطعم معزولة تماماً وخاصة بك وحدك لمتابعة تفاصيل طلبك.
+            <h4 style={{ fontSize: "14px", fontWeight: 800, color: "#24140D", marginBottom: "4px" }}>شات خاص وآمن</h4>
+            <p style={{ fontSize: "12px", color: "#6B4226", lineHeight: 1.5 }}>
+              محادثاتك مع المطعم معزولة تماماً وخاصة بك لمتابعة تفاصيل طلبك مباشرة.
             </p>
           </div>
         </div>
@@ -489,22 +490,22 @@ export default function DownloadAppPage() {
         <div 
           style={{
             background: "#FFFFFF",
-            border: "1px solid #E8DAC8",
+            border: "1px solid #E8DFD5",
             borderRadius: "18px",
             padding: "20px",
             display: "flex",
             alignItems: "flex-start",
             gap: "14px",
-            boxShadow: "0 2px 8px rgba(43,23,14,0.03)",
+            boxShadow: "0 2px 8px rgba(36,20,13,0.03)",
           }}
         >
-          <div style={{ background: "rgba(212, 149, 78, 0.15)", padding: "10px", borderRadius: "12px", color: "#C6873E" }}>
+          <div style={{ background: "rgba(220, 38, 38, 0.1)", padding: "10px", borderRadius: "12px", color: "#DC2626" }}>
             <BellRing size={22} />
           </div>
           <div>
-            <h4 style={{ fontSize: "14px", fontWeight: 800, color: "#2B170E", marginBottom: "4px" }}>إشعارات لحظية</h4>
-            <p style={{ fontSize: "12px", color: "#7E5E49", lineHeight: 1.5 }}>
-              متابعة حالة تحضير الطلب، خروج الكابتن، ووقت الوصول بدقة.
+            <h4 style={{ fontSize: "14px", fontWeight: 800, color: "#24140D", marginBottom: "4px" }}>إشعارات وعروض فورية</h4>
+            <p style={{ fontSize: "12px", color: "#6B4226", lineHeight: 1.5 }}>
+              تنبيهات فورية بعروض الثلاثاء والأربعاء والخميس ومتابعة حالة الدليفري خطوة بخطوة.
             </p>
           </div>
         </div>
@@ -517,9 +518,9 @@ export default function DownloadAppPage() {
           maxWidth: "880px",
           marginTop: "48px",
           textAlign: "center",
-          borderTop: "1px solid #E8DAC8",
+          borderTop: "1px solid #E8DFD5",
           paddingTop: "24px",
-          color: "#7E5E49",
+          color: "#6B4226",
           fontSize: "12.5px",
           zIndex: 10,
         }}
@@ -527,8 +528,8 @@ export default function DownloadAppPage() {
         <p style={{ marginBottom: "8px" }}>
           🚀 جاري تجهيز وإصدار النسخة الرسمية على <strong>Google Play Store</strong> و <strong>Apple App Store</strong>.
         </p>
-        <p style={{ color: "#C6873E", fontWeight: 700, marginBottom: "12px" }}>
-          جميع الحقوق محفوظة © الوجبة الشهية Desserts {new Date().getFullYear()}
+        <p style={{ color: "#24140D", fontWeight: 700, marginBottom: "12px" }}>
+          جميع الحقوق محفوظة © مطعم الوجبة الشهية {new Date().getFullYear()}
         </p>
         <div>
           <a
@@ -536,7 +537,7 @@ export default function DownloadAppPage() {
             target="_blank"
             rel="noopener noreferrer"
             style={{
-              color: "#C6873E",
+              color: "#6B4226",
               textDecoration: "none",
               fontSize: "12px",
               fontWeight: 800,
@@ -546,8 +547,8 @@ export default function DownloadAppPage() {
               padding: "8px 16px",
               borderRadius: "100px",
               background: "#FFFFFF",
-              border: "1px solid #E8DAC8",
-              boxShadow: "0 2px 6px rgba(43,23,14,0.03)",
+              border: "1px solid #E8DFD5",
+              boxShadow: "0 2px 6px rgba(36,20,13,0.04)",
             }}
           >
             <span>تم التطوير بواسطة شركة أوركا للحلول البرمجية والخدمات السحابية 🐋</span>

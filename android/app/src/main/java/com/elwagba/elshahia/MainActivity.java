@@ -1,4 +1,4 @@
-package com.wafflehouse.cairo;
+package com.elwagba.elshahia;
 
 import com.getcapacitor.BridgeActivity;
 
