@@ -1591,7 +1591,7 @@ export default function InventoryPage() {
                     type="text"
                     value={modalItem.name || ""}
                     onChange={(e) => setModalItem({ ...modalItem, name: e.target.value })}
-                    placeholder={t("مثلاً: نوتيلا كبير، لوتس، دقيق وافل...", "e.g., Nutella large, Lotus, Waffle flour...")}
+                    placeholder={t("مثلاً: فراخ كاملة، شيكارة أرز بسمتي، بهارات شاورما...", "e.g., Whole chicken, Basmati rice, Shawarma spices...")}
                     style={{
                       width: "100%", height: "42px", background: "#FAF6EE",
                       border: "1px solid #E8DAC8", borderRadius: "12px",

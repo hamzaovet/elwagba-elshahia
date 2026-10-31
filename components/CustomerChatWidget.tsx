@@ -99,7 +99,7 @@ export default function CustomerChatWidget({ lang = "ar" }: CustomerChatWidgetPr
     const textToSend = customText || inputText;
     if (!textToSend.trim()) return;
 
-    const sender = customerName.trim() || (lang === "en" ? "Waffle House Guest" : "عميل Waffle House");
+    const sender = customerName.trim() || (lang === "en" ? "الوجبة الشهية Guest" : "عميل الوجبة الشهية");
     const activeToken = chatToken || (typeof window !== "undefined" ? localStorage.getItem("choco_chat_token") : null);
     setSending(true);
     playSound("click");
@@ -241,7 +241,7 @@ export default function CustomerChatWidget({ lang = "ar" }: CustomerChatWidgetPr
               </div>
               <div>
                 <h4 style={{ margin: 0, fontSize: "13.5px", fontWeight: 800, color: "#2B170E" }}>
-                  Waffle House Live Support
+                  الوجبة الشهية Live Support
                 </h4>
                 <div style={{ display: "flex", alignItems: "center", gap: "5px", fontSize: "11px", color: "#16a34a" }}>
                   <span
@@ -348,11 +348,11 @@ export default function CustomerChatWidget({ lang = "ar" }: CustomerChatWidgetPr
               }}
             >
               <div style={{ fontWeight: 800, color: "#C6873E", fontSize: "11px", marginBottom: "3px" }}>
-                فريق Waffle House 🧇🍰
+                فريق الوجبة الشهية 🧇🍰
               </div>
               {lang === "en"
-                ? "Hello! Welcome to Waffle House. We bake fresh to order — how can we help you today?"
-                : "أهلاً بك في Waffle House! نخبز طازة لحظة طلبك، نقدر نساعد حضرتك بإيه النهاردة؟ 🧇🍰"}
+                ? "Hello! Welcome to الوجبة الشهية. We bake fresh to order — how can we help you today?"
+                : "أهلاً بك في الوجبة الشهية! نخبز طازة لحظة طلبك، نقدر نساعد حضرتك بإيه النهاردة؟ 🧇🍰"}
             </div>
 
             {/* Conversation Messages */}
@@ -383,7 +383,7 @@ export default function CustomerChatWidget({ lang = "ar" }: CustomerChatWidgetPr
                   }}
                 >
                   {m.isStaff && <ChefHat size={12} />}
-                  <span>{m.isStaff ? "خدمة العملاء (Waffle House)" : m.senderName}</span>
+                  <span>{m.isStaff ? "خدمة العملاء (الوجبة الشهية)" : m.senderName}</span>
                 </div>
                 <div style={{ lineHeight: 1.45 }}>{m.text}</div>
                 <div style={{ fontSize: "9.5px", color: m.isStaff ? "#967B66" : "rgba(255,255,255,0.75)", marginTop: "4px", textAlign: "left" }}>

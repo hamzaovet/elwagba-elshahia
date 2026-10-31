@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 
 export async function GET() {
-  // Direct link to the latest Waffle House Cairo APK on GitHub Releases
+  // Direct link to the latest الوجبة الشهية APK on GitHub Releases
   const downloadUrl =
     process.env.APK_DOWNLOAD_URL ||
-    "https://github.com/hamzaovet/waffle-house/releases/download/v1.0.5/waffle-house.apk";
+    "https://github.com/hamzaovet/elwagba-elshahia/releases/download/v1.0.0/elwagba-elshahia.apk";
 
   return NextResponse.redirect(downloadUrl, {
     status: 302,

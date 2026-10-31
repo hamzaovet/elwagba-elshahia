@@ -73,7 +73,7 @@ const DEFAULT_OFFERS: OfferData = {
     {
       id: "delivery",
       title: "توصيل مجاني",
-      desc: "اطلب بأكثر من 350 ج م والتوصيل علينا داخل حدائق القبة",
+      desc: "اطلب بأكثر من 350 ج م والتوصيل علينا داخل 6 أكتوبر",
       icon: "delivery",
     },
     {
@@ -708,7 +708,7 @@ export default function OffersAdminPage() {
                     >
                       <input
                         type="radio"
-                        name="waffleDiscountScope"
+                        name="wagbaDiscountScope"
                         checked={discount.scope === "all"}
                         onChange={() => updateDiscount("scope", "all")}
                       />
@@ -737,7 +737,7 @@ export default function OffersAdminPage() {
                     >
                       <input
                         type="radio"
-                        name="waffleDiscountScope"
+                        name="wagbaDiscountScope"
                         checked={discount.scope === "category"}
                         onChange={() => updateDiscount("scope", "category")}
                       />
@@ -746,7 +746,7 @@ export default function OffersAdminPage() {
                           📂 {t("على قسم بالتحديد فقط", "Specific Category Only")}
                         </div>
                         <div style={{ fontSize: "11px", color: "#7E5E49" }}>
-                          مثال: خصم على قسم الوافل فقط أو البان كيك
+                          مثال: خصم على قسم المشويات فقط أو صواني العيلة
                         </div>
                       </div>
                     </label>
@@ -766,7 +766,7 @@ export default function OffersAdminPage() {
                     >
                       <input
                         type="radio"
-                        name="waffleDiscountScope"
+                        name="wagbaDiscountScope"
                         checked={discount.scope === "products"}
                         onChange={() => updateDiscount("scope", "products")}
                       />

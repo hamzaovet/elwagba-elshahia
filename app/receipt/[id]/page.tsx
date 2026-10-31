@@ -135,7 +135,7 @@ export default function DigitalReceiptPage({ params }: { params: Promise<{ id: s
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "16px" }}>
           <Link href="/" style={{ display: "flex", alignItems: "center", gap: "6px", color: "#F59E0B", textDecoration: "none", fontSize: "13px", fontWeight: 800 }}>
             <ArrowRight size={16} />
-            <span>WAFFLE HOUSE • العودة للمنيو</span>
+            <span>الوجبة الشهية • العودة للمنيو</span>
           </Link>
 
           <button
@@ -151,11 +151,11 @@ export default function DigitalReceiptPage({ params }: { params: Promise<{ id: s
         <div style={{ background: "#FFFFFF", color: "#180e06", borderRadius: "22px", padding: "24px 20px", boxShadow: "0 16px 45px rgba(0,0,0,0.7)" }}>
           {/* Logo & Header */}
           <div style={{ textAlign: "center", marginBottom: "14px" }}>
-            <img src="/logo.jpg" alt="Waffle House" style={{ width: "85px", height: "85px", borderRadius: "50%", objectFit: "cover", margin: "0 auto 8px", display: "block", border: "2px solid #8B0000" }} />
-            <div style={{ fontSize: "16px", fontWeight: 900, color: "#180e06" }}>WAFFLE HOUSE • وافل هاوس</div>
-            <div style={{ fontSize: "11px", fontWeight: 800, color: "#8B0000" }}>SWEET WE HAVE SWEETEST</div>
-            <div style={{ fontSize: "11.5px", color: "#444", fontWeight: 700, marginTop: "2px" }}>حدائق القبة - شارع مصر والسودان - بجوار حلواني الشيبي</div>
-            <div style={{ fontSize: "12.5px", fontWeight: 800, marginTop: "2px" }}>هاتف الطلبات: 01155175799 - 01117649159</div>
+            <img src="/logo.jpg" alt="الوجبة الشهية" style={{ width: "85px", height: "85px", borderRadius: "50%", objectFit: "cover", margin: "0 auto 8px", display: "block", border: "2px solid #8B0000" }} />
+            <div style={{ fontSize: "16px", fontWeight: 900, color: "#180e06" }}>مطعم الوجبة الشهية • AL WAGBA AL SHAHIA</div>
+            <div style={{ fontSize: "11px", fontWeight: 800, color: "#8B0000" }}>أكل بطعم بيحبه قلبك • أكل بطعم مختلف</div>
+            <div style={{ fontSize: "11.5px", color: "#444", fontWeight: 700, marginTop: "2px" }}>6 أكتوبر - الحي الثاني - شارع جيل 2000 (عمارة 661 مقابل مدرسة أم المؤمنين)</div>
+            <div style={{ fontSize: "12.5px", fontWeight: 800, marginTop: "2px" }}>هاتف الطلبات: 01019845220 - 01111316817</div>
           </div>
 
           <div style={{ borderTop: "2px solid #180e06", margin: "12px 0" }} />
@@ -259,12 +259,12 @@ export default function DigitalReceiptPage({ params }: { params: Promise<{ id: s
             </div>
             {isDelivery ? (
               <>
-                <div><strong>منطقة التوصيل:</strong> {order.zone || "حدائق القبة"}</div>
+                <div><strong>منطقة التوصيل:</strong> {order.zone || "6 أكتوبر"}</div>
                 {order.address && <div><strong>العنوان:</strong> {order.address}</div>}
               </>
             ) : (
               <div style={{ color: "#047857", fontWeight: 700, marginTop: "2px" }}>
-                📍 الاستلام من: فرع حدائق القبة (شارع مصر والسودان)
+                📍 الاستلام من: فرع 6 أكتوبر (شارع مصر والسودان)
               </div>
             )}
             {order.notes && <div style={{ color: "#b45309", background: "#fef3c7", padding: "4px 8px", borderRadius: "6px", marginTop: "4px" }}><strong>ملاحظات:</strong> {order.notes}</div>}
@@ -321,7 +321,7 @@ export default function DigitalReceiptPage({ params }: { params: Promise<{ id: s
               <span style={{ fontWeight: 700 }}>{order.subtotal} ج</span>
             </div>
             <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <span>{isDelivery ? `خدمة التوصيل (${order.zone || "حدائق القبة"}):` : "رسوم الاستلام من الفرع:"}</span>
+              <span>{isDelivery ? `خدمة التوصيل (${order.zone || "6 أكتوبر"}):` : "رسوم الاستلام من الفرع:"}</span>
               <span style={{ fontWeight: 700 }}>{isDelivery ? `${order.deliveryFee} ج` : "0 ج (مجاناً)"}</span>
             </div>
 

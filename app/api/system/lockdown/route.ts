@@ -35,7 +35,7 @@ export async function POST(req: Request) {
       },
       create: {
         id: "default",
-        restaurantName: "Waffle House",
+        restaurantName: "الوجبة الشهية",
         phone: "01018671000",
         address: "القاهرة - مصر",
         isLockedDown: Boolean(isLockedDown),

@@ -490,7 +490,7 @@ export default function DashboardOrdersPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          senderName: currentUser?.name || "فريق Waffle House",
+          senderName: currentUser?.name || "فريق الوجبة الشهية",
           senderRole: currentUser?.role || "staff",
           text: chatReplyText.trim(),
           isStaff: true,
@@ -557,7 +557,7 @@ export default function DashboardOrdersPage() {
         : "تم استلامه وجاري تنفيذه 📋";
 
     const msg =
-      `مرحباً ${order.customerName} من Waffle House 🧇🍰\n` +
+      `مرحباً ${order.customerName} من الوجبة الشهية 🧇🍰\n` +
       `بخصوص أوردر رقم: #${order.orderNumber}\n` +
       `الحالة الحالية: ${statusLabel}\n` +
       `الإجمالي المطلوب: ${order.total} ج.م ${order.paymentMethod === "cash" ? "(كاش 💵)" : "(مدفوع إلكترونياً 💳)"}\n` +
@@ -588,13 +588,13 @@ export default function DashboardOrdersPage() {
     const mapsUrl = `https://maps.google.com/?q=${addressQuery}`;
 
     const msg =
-      `🛵 *بيان توصيل أوردر جديد — Waffle House 🧇🍰*\n\n` +
+      `🛵 *بيان توصيل أوردر جديد — الوجبة الشهية 🧇🍰*\n\n` +
       `أهلاً كابتن ${captName}، تفاصيل الطلب للتوصيل الفوري:\n` +
       `━━━━━━━━━━━━━━━━━━━\n` +
       `🏷️ *أوردر رقم:* #${order.orderNumber}\n` +
       `👤 *اسم العميل:* ${order.customerName}\n` +
       `📞 *هاتف العميل:* ${order.phone}\n` +
-      `📍 *العنوان:* ${order.address || "غير محدد"} (${order.zone || "حدائق القبة"})\n` +
+      `📍 *العنوان:* ${order.address || "غير محدد"} (${order.zone || "6 أكتوبر"})\n` +
       `🗺️ *لوكيشن الخريطة المباشر:*\n${mapsUrl}\n\n` +
       `🍰 *الأصناف المطلوبة:*\n${itemsList || "أصناف متنوعة"}\n\n` +
       `💰 *المطلوب تحصيله كاش:* ${order.total} ج.م ${
@@ -1392,7 +1392,7 @@ export default function DashboardOrdersPage() {
                         >
                           <MapPin size={13} color="#C6873E" />
                           <span>
-                            {order.address} ({order.zone || "حدائق القبة"})
+                            {order.address} ({order.zone || "6 أكتوبر"})
                           </span>
                         </div>
                       )}
@@ -1789,7 +1789,7 @@ export default function DashboardOrdersPage() {
                       {t("إسناد الأوردر لطيار الدليفري 🛵", "Assign Delivery Captain")}
                     </h3>
                     <p style={{ margin: "2px 0 0 0", fontSize: "12px", color: "#C6873E", fontWeight: 700 }}>
-                      أوردر #{captainModalOrder.orderNumber} • المطلوب تحصيله: {captainModalOrder.total} ج.م ({captainModalOrder.zone || "حدائق القبة"})
+                      أوردر #{captainModalOrder.orderNumber} • المطلوب تحصيله: {captainModalOrder.total} ج.م ({captainModalOrder.zone || "6 أكتوبر"})
                     </p>
                   </div>
                 </div>
@@ -2458,7 +2458,7 @@ export default function DashboardOrdersPage() {
                                     cpt.phone.replace(/[^0-9]/g, "").startsWith("0")
                                       ? "2" + cpt.phone.replace(/[^0-9]/g, "")
                                       : cpt.phone.replace(/[^0-9]/g, "")
-                                  }?text=${encodeURIComponent("مرحباً كابتن " + cpt.name + " من إدارة Waffle House 🧇🍰")}`}
+                                  }?text=${encodeURIComponent("مرحباً كابتن " + cpt.name + " من إدارة الوجبة الشهية 🧇🍰")}`}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   title="مراسلة الكابتن عبر واتساب"
@@ -2551,7 +2551,7 @@ export default function DashboardOrdersPage() {
                                       <div>
                                         <strong style={{ color: "#7E22CE" }}>#{ord.orderNumber}</strong> •{" "}
                                         <span style={{ fontWeight: 800, color: "#2B170E" }}>{ord.customerName}</span> •{" "}
-                                        <span style={{ color: "#7E5E49" }}>{ord.address || ord.zone || "حدائق القبة"}</span>
+                                        <span style={{ color: "#7E5E49" }}>{ord.address || ord.zone || "6 أكتوبر"}</span>
                                       </div>
                                       <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                                         <span style={{ fontWeight: 900, color: "#C6873E" }}>
@@ -2614,7 +2614,7 @@ export default function DashboardOrdersPage() {
                 }}
               >
                 <span style={{ fontSize: "12px", color: "#7E5E49", fontWeight: 700 }}>
-                  Waffle House Fleet Intelligence Engine 🛵
+                  الوجبة الشهية Fleet Intelligence Engine 🛵
                 </span>
                 <button
                   type="button"
@@ -3021,7 +3021,7 @@ export default function DashboardOrdersPage() {
                 }}
               >
                 <span style={{ fontSize: "12px", color: "#7E5E49", fontWeight: 700 }}>
-                  Waffle House Cairo Dynamic Delivery Zones & Pricing Engine 🛵
+                  الوجبة الشهية Cairo Dynamic Delivery Zones & Pricing Engine 🛵
                 </span>
                 <button
                   type="button"
@@ -3151,7 +3151,7 @@ export default function DashboardOrdersPage() {
                         selectedChatPhone.replace(/[^0-9]/g, "").startsWith("0")
                           ? "2" + selectedChatPhone.replace(/[^0-9]/g, "")
                           : selectedChatPhone.replace(/[^0-9]/g, "")
-                      }?text=${encodeURIComponent("مرحباً من فريق Waffle House 🧇🍰")}`}
+                      }?text=${encodeURIComponent("مرحباً من فريق الوجبة الشهية 🧇🍰")}`}
                       target="_blank"
                       rel="noopener noreferrer"
                       title="مراسلة العميل عبر واتساب مباشرة"

@@ -250,8 +250,8 @@ export default function CashierPage() {
         extras: [],
       }));
       const finalName = ticketCustomerName.trim() || (ticketOrderType === "takeaway" ? "عميل تيك أواي كاونتر" : ticketOrderType === "dinein" ? "عميل صالة" : "عميل دليفري");
-      const finalPhone = ticketCustomerPhone.trim() || "01155175799";
-      const finalAddress = ticketOrderType === "delivery" ? (ticketAddress.trim() || ticketSelectedZone.nameAr) : "فرع حدائق القبة - شارع مصر والسودان";
+      const finalPhone = ticketCustomerPhone.trim() || "01019845220";
+      const finalAddress = ticketOrderType === "delivery" ? (ticketAddress.trim() || ticketSelectedZone.nameAr) : "فرع 6 أكتوبر - الحي الثاني";
       const finalZone = ticketOrderType === "delivery" ? ticketSelectedZone.nameAr : (ticketOrderType === "takeaway" ? "استلام فرع (تيك أواي)" : "صالة");
 
       const res = await fetch("/api/orders", {
@@ -325,7 +325,7 @@ export default function CashierPage() {
               <h1 style={{ fontSize: "19px", fontWeight: 900, color: "#FFFFFF", margin: 0, display: "flex", alignItems: "center", gap: "8px", flexWrap: "wrap" }}>
                 {t("ماكينة الكاشير والبيع المباشر (POS)", "Direct Counter Sale & POS")}
                 <span style={{ fontSize: "11px", background: "#8B0000", color: "#fde68a", padding: "2px 10px", borderRadius: "100px", fontWeight: 700 }}>
-                  فرع حدائق القبة
+                  فرع 6 أكتوبر
                 </span>
               </h1>
               <p style={{ fontSize: "12px", color: "rgba(253,230,138,0.75)", margin: "3px 0 0" }}>

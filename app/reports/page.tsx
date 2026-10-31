@@ -572,7 +572,7 @@ export default function ReportsPage() {
                     type="text"
                     value={expenseForm.description}
                     onChange={(e) => setExpenseForm({ ...expenseForm, description: e.target.value })}
-                    placeholder={t("مثلاً: شراء خامات وافل، كرتونة نوتيلا، فاتورة كهرباء، صيانة...", "e.g., waffle ingredients, Nutella, electric bill, maintenance...")}
+                    placeholder={t("مثلاً: شراء فراخ، شيكارة أرز، فحم شوي، فاتورة كهرباء، صيانة...", "e.g., waffle ingredients, Nutella, electric bill, maintenance...")}
                     style={{
                       width: "100%", height: "42px", background: "#FAF6EE",
                       border: "1px solid #E8DAC8", borderRadius: "12px",

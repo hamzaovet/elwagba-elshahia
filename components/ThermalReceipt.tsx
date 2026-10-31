@@ -178,10 +178,10 @@ export function printThermalReceipt(order: PrintableOrder) {
         <div><span class="font-bold">العميل:</span> ${order.customerName}</div>
         <div><span class="font-bold">الموبايل:</span> ${order.phone}</div>
         ${isDelivery ? `
-          <div><span class="font-bold">المنطقة:</span> ${order.zone || "حدائق القبة"}</div>
+          <div><span class="font-bold">المنطقة:</span> ${order.zone || "6 أكتوبر"}</div>
           ${order.address ? `<div><span class="font-bold">العنوان:</span> ${order.address}</div>` : ""}
         ` : `
-          <div style="color: #047857; font-weight: bold;">الاستلام: فرع حدائق القبة (شارع مصر والسودان)</div>
+          <div style="color: #047857; font-weight: bold;">الاستلام: فرع 6 أكتوبر (شارع مصر والسودان)</div>
         `}
         ${order.notes ? `<div><span class="font-bold">ملاحظات:</span> ⚠️ ${order.notes}</div>` : ""}
       </div>
@@ -230,7 +230,7 @@ export function printThermalReceipt(order: PrintableOrder) {
         <span>${order.subtotal} ج</span>
       </div>
       <div class="flex-between">
-        <span>${isDelivery ? `خدمة التوصيل (${order.zone || "حدائق القبة"}):` : "رسوم التوصيل (استلام / صالة):"}</span>
+        <span>${isDelivery ? `خدمة التوصيل (${order.zone || "6 أكتوبر"}):` : "رسوم التوصيل (استلام / صالة):"}</span>
         <span>${isDelivery ? `${order.deliveryFee} ج` : "0 ج (مجاناً)"}</span>
       </div>
 
@@ -249,14 +249,14 @@ export function printThermalReceipt(order: PrintableOrder) {
       <div class="divider"></div>
 
       <div class="text-center" style="margin-top: 8px;">
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=${encodeURIComponent((typeof window !== 'undefined' ? window.location.origin : 'https://waffle-house-alpha.vercel.app') + '/receipt/' + order.id)}" style="width: 28mm; height: 28mm; margin: 0 auto 4px; display: block;" alt="Receipt QR" />
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=${encodeURIComponent((typeof window !== 'undefined' ? window.location.origin : 'https://elwagba-elshahia.vercel.app') + '/receipt/' + order.id)}" style="width: 28mm; height: 28mm; margin: 0 auto 4px; display: block;" alt="Receipt QR" />
         <div style="font-size: 10px; font-weight: bold;">📱 امسح الكود لتتبع الفاتورة والأوردر رقمياً</div>
       </div>
 
       <div class="footer-note">
         شكراً لطلبكم من مطعم الوجبة الشهية 🍗🔥<br/>
         6 أكتوبر - الحي الثاني - شارع جيل 2000<br/>
-        *** تم تطوير النظام بواسطة شركة أوركا للحلول البرمجية والخدمات السحابية ***
+        
       </div>
     </body>
     </html>
@@ -434,12 +434,12 @@ export default function ThermalReceiptModal({ order, onClose }: ThermalReceiptMo
               <div><b>الموبايل:</b> {order.phone}</div>
               {isDelivery ? (
                 <>
-                  <div><b>المنطقة:</b> {order.zone || "حدائق القبة"}</div>
+                  <div><b>المنطقة:</b> {order.zone || "6 أكتوبر"}</div>
                   {order.address && <div><b>العنوان:</b> {order.address}</div>}
                 </>
               ) : (
                 <div style={{ color: "#047857", fontWeight: 700, marginTop: "2px" }}>
-                  📍 استلام من فرع حدائق القبة (شارع مصر والسودان)
+                  📍 استلام من فرع 6 أكتوبر (شارع مصر والسودان)
                 </div>
               )}
               {order.notes && <div style={{ color: "#b45309" }}><b>ملاحظات:</b> 📝 {order.notes}</div>}
@@ -517,7 +517,7 @@ export default function ThermalReceiptModal({ order, onClose }: ThermalReceiptMo
             <div style={{ textAlign: "center", margin: "10px 0" }}>
               <img
                 src={`https://api.qrserver.com/v1/create-qr-code/?size=130x130&data=${encodeURIComponent(
-                  (typeof window !== "undefined" ? window.location.origin : "https://waffle-house-alpha.vercel.app") + "/receipt/" + order.id
+                  (typeof window !== "undefined" ? window.location.origin : "https://elwagba-elshahia.vercel.app") + "/receipt/" + order.id
                 )}`}
                 alt="QR Code"
                 style={{ width: "95px", height: "95px", margin: "0 auto 4px", display: "block" }}

@@ -1,124 +1,169 @@
 @import "tailwindcss";
 
-.font-playfair {
-  font-family: var(--font-playfair), Georgia, "Palatino Linotype", serif;
-}
-
+/* El Dahan & Al Wagba Theme Variables */
 :root {
-  --bg-primary: #0D0A08;
-  --bg-secondary: #14100D;
-  --bg-card: #1C1613;
-  --bg-card-hover: #241D19;
-  --border-subtle: rgba(245, 158, 11, 0.18);
-  --border-gold: #F59E0B;
-  --flame-red: #DC2626;
-  --flame-orange: #EA580C;
-  --flame-gold: #F59E0B;
-  --text-main: #FFFFFF;
-  --text-sub: #D1D5DB;
-  --text-muted: #9CA3AF;
+  --eldahan-dark: #23140C;
+  --eldahan-dark-hover: #331C10;
+  --eldahan-gold: #C6873E;
+  --eldahan-gold-light: #E0A358;
+  --eldahan-red: #C5221F;
+  --eldahan-red-dark: #991B1B;
+  --eldahan-cream: #FAF7F2;
+  --eldahan-card-bg: #FFFFFF;
+  --eldahan-border: #EADBCC;
+  --eldahan-text: #2B170E;
+  --eldahan-muted: #7E6554;
 }
 
 html {
   scroll-behavior: smooth;
-  background-color: #0D0A08;
-  color: #FFFFFF;
+  background-color: #FAF7F2;
+  color: #2B170E;
 }
 
-/* Scrollbar */
+/* Custom Scrollbars */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #372A23 #0D0A08;
+  scrollbar-color: #C6873E #FAF7F2;
 }
 
 *::-webkit-scrollbar { width: 6px; height: 6px; }
-*::-webkit-scrollbar-track { background: #0D0A08; }
-*::-webkit-scrollbar-thumb { background: #372A23; border-radius: 8px; }
-*::-webkit-scrollbar-thumb:hover { background: #F59E0B; }
+*::-webkit-scrollbar-track { background: #FAF7F2; }
+*::-webkit-scrollbar-thumb { background: #C6873E; border-radius: 8px; }
 
-/* Keyframe animations */
+/* Carousel Keyframes */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
+  from { opacity: 0; transform: translateY(6px); }
   to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes slideInRight {
-  from { opacity: 0; transform: translateX(30px); }
-  to { opacity: 1; transform: translateX(0); }
+@keyframes pulse-subtle {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
 }
 
-@keyframes flame-pulse {
-  0%, 100% {
-    box-shadow: 0 0 20px -3px rgba(220, 38, 38, 0.4), 0 0 10px -2px rgba(245, 158, 11, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 35px 2px rgba(220, 38, 38, 0.7), 0 0 18px 4px rgba(245, 158, 11, 0.5);
-  }
+.animate-fadeIn { animation: fadeIn 0.3s ease forwards; }
+.animate-pulse-subtle { animation: pulse-subtle 2.5s infinite ease-in-out; }
+
+/* El Dahan Calligraphy / Classic Style */
+.eldahan-serif {
+  font-family: var(--font-cairo), 'Amiri', 'Traditional Arabic', serif;
 }
 
-@keyframes gold-shimmer {
-  0% { background-position: -200% center; }
-  100% { background-position: 200% center; }
+/* El Dahan Product Card */
+.eldahan-card {
+  background: #FFFFFF;
+  border: 1px solid #EADBCC;
+  border-radius: 16px;
+  overflow: hidden;
+  transition: all 0.22s ease-in-out;
+  box-shadow: 0 2px 10px rgba(43, 23, 14, 0.05);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
-.animate-fadeIn { animation: fadeIn 0.4s ease forwards; }
-.animate-slideInRight { animation: slideInRight 0.35s ease forwards; }
-.animate-flame-pulse { animation: flame-pulse 2.2s infinite ease-in-out; }
-
-/* El Dahan & Wagba Shahia Card Style */
-.wagba-card {
-  background: #17120F;
-  border: 1px solid rgba(245, 158, 11, 0.2);
-  border-radius: 18px;
-  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-}
-.wagba-card:hover {
-  border-color: #F59E0B;
+.eldahan-card:hover {
+  border-color: #C6873E;
   transform: translateY(-4px);
-  box-shadow: 0 14px 30px -10px rgba(220, 38, 38, 0.35), 0 4px 15px -3px rgba(245, 158, 11, 0.2);
+  box-shadow: 0 12px 28px rgba(43, 23, 14, 0.12);
 }
 
-/* Fiery Red Button */
-.btn-flame {
+/* Flame & Gold Buttons */
+.btn-eldahan-flame {
   background: linear-gradient(135deg, #DC2626 0%, #B91C1C 100%);
   color: #FFFFFF;
   font-weight: 800;
-  box-shadow: 0 4px 15px rgba(220, 38, 38, 0.35);
+  border: none;
+  cursor: pointer;
   transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(220, 38, 38, 0.3);
 }
-.btn-flame:hover {
+
+.btn-eldahan-flame:hover {
   background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
-  box-shadow: 0 6px 22px rgba(220, 38, 38, 0.55);
-  transform: scale(1.02);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(220, 38, 38, 0.45);
 }
-.btn-flame:active { transform: scale(0.98); }
 
-/* Regal Gold Button */
-.btn-gold {
-  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
-  color: #0D0A08;
-  font-weight: 900;
-  box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
-  transition: all 0.2s ease;
-}
-.btn-gold:hover {
-  background: linear-gradient(135deg, #FBBF24 0%, #F59E0B 100%);
-  box-shadow: 0 6px 22px rgba(245, 158, 11, 0.5);
-  transform: scale(1.02);
-}
-.btn-gold:active { transform: scale(0.98); }
-
-/* Badge styles */
-.badge-promo {
-  background: linear-gradient(135deg, #DC2626 0%, #EA580C 100%);
+.btn-eldahan-gold {
+  background: linear-gradient(135deg, #C6873E 0%, #A86D2C 100%);
   color: #FFFFFF;
-  font-weight: 900;
-  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.4);
+  font-weight: 800;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 14px rgba(198, 135, 62, 0.3);
 }
 
-.badge-gold {
-  background: rgba(245, 158, 11, 0.15);
-  border: 1px solid rgba(245, 158, 11, 0.4);
-  color: #FBBF24;
-  font-weight: 800;
+.btn-eldahan-gold:hover {
+  background: linear-gradient(135deg, #D4954E 0%, #C6873E 100%);
+  transform: translateY(-1px);
+}
+
+/* El Dahan Hero Carousel Track & Slides */
+.wagba-hero-container {
+  overflow: hidden;
+  position: relative;
+  border-radius: 18px;
+  background-color: #FFFFFF;
+  border: 1.5px solid #EADBCC;
+  box-shadow: 0 8px 30px rgba(43, 23, 14, 0.08);
+  direction: ltr;
+}
+
+.wagba-hero-track {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  transition: transform 0.65s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: transform;
+}
+
+.wagba-hero-slide {
+  min-width: 100%;
+  max-width: 100%;
+  flex-shrink: 0;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 1fr 1.15fr;
+  min-height: 380px;
+  align-items: stretch;
+  background: linear-gradient(135deg, #FFFDF9 0%, #FAF6F0 100%);
+  direction: rtl;
+}
+
+.slide-image-col {
+  position: relative;
+  min-height: 380px;
+  background-color: #1A0E08;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slide-content-col {
+  padding: 36px 44px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 12px;
+  background-color: #FFFFFF;
+}
+
+@media (max-width: 768px) {
+  .wagba-hero-slide {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+  .slide-image-col {
+    height: 240px !important;
+    min-height: 240px !important;
+  }
+  .slide-content-col {
+    padding: 20px 18px !important;
+    gap: 10px !important;
+  }
 }

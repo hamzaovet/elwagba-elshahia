@@ -45,7 +45,7 @@ export default function DownloadAppPage() {
     setDownloading(true);
     const link = document.createElement("a");
     link.href = "/api/download/apk";
-    link.setAttribute("download", "waffle-house.apk");
+    link.setAttribute("download", "elwagba.apk");
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
@@ -58,8 +58,8 @@ export default function DownloadAppPage() {
   function handleShare() {
     if (navigator.share) {
       navigator.share({
-        title: "تطبيق Waffle House للأندرويد",
-        text: "حمّل تطبيق Waffle House الرسمي للأندرويد واستمتع بأشهى الوافل والكيك والحلويات بأسرع تجربة طلب!",
+        title: "تطبيق الوجبة الشهية للأندرويد",
+        text: "حمّل تطبيق الوجبة الشهية الرسمي للأندرويد واستمتع بأشهى الوافل والكيك والحلويات بأسرع تجربة طلب!",
         url: window.location.href,
       }).catch(() => {});
     } else {
@@ -173,7 +173,7 @@ export default function DownloadAppPage() {
           zIndex: 10,
         }}
       >
-        حمّل تطبيق Waffle House الرسمي 🧇🍰
+        حمّل تطبيق الوجبة الشهية الرسمي 🧇🍰
       </h1>
       <p 
         style={{
@@ -187,7 +187,7 @@ export default function DownloadAppPage() {
           fontWeight: 600,
         }}
       >
-        تجربة طلب فورية وسلسة لأشهى الوافل، الميني بانكيك، والموتشي، مع توصيل سريع لكافة مناطق القاهرة (فرع حدائق القبة - شارع مصر والسودان).
+        تجربة طلب فورية وسلسة لأشهى الوافل، الميني بانكيك، والموتشي، مع توصيل سريع لكافة مناطق القاهرة (فرع 6 أكتوبر - الحي الثاني).
       </p>
 
       {/* Auto Countdown Banner if triggered */}
@@ -269,8 +269,8 @@ export default function DownloadAppPage() {
             }}
           >
             <img 
-              src="/waffle-apk-qr.png" 
-              alt="QR Code لتحميل تطبيق Waffle House"
+              src="/apk-qr.png" 
+              alt="QR Code لتحميل تطبيق الوجبة الشهية"
               style={{
                 width: "190px",
                 height: "190px",
@@ -338,7 +338,7 @@ export default function DownloadAppPage() {
           {/* Direct link fallback */}
           <div style={{ textAlign: "center" }}>
             <a 
-              href="https://github.com/hamzaovet/waffle-house/releases/download/v1.0.5/waffle-house.apk"
+              href="https://github.com/hamzaovet/elwagba-house/releases/download/v1.0.5/elwagba.apk"
               target="_blank"
               rel="noopener noreferrer"
               style={{
@@ -528,7 +528,7 @@ export default function DownloadAppPage() {
           🚀 جاري تجهيز وإصدار النسخة الرسمية على <strong>Google Play Store</strong> و <strong>Apple App Store</strong>.
         </p>
         <p style={{ color: "#C6873E", fontWeight: 700, marginBottom: "12px" }}>
-          جميع الحقوق محفوظة © Waffle House Desserts {new Date().getFullYear()}
+          جميع الحقوق محفوظة © الوجبة الشهية Desserts {new Date().getFullYear()}
         </p>
         <div>
           <a

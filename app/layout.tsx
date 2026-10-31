@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Cairo, Playfair_Display } from "next/font/google";
+import { Cairo } from "next/font/google";
 import "./globals.css";
 import { StaffProvider } from "@/context/StaffContext";
 import { LanguageProvider } from "@/context/LanguageContext";
@@ -14,16 +14,9 @@ const cairo = Cairo({
   display: "swap",
 });
 
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  weight: ["600", "700", "900"],
-  variable: "--font-playfair",
-  display: "swap",
-});
-
 export const metadata: Metadata = {
-  title: "مطعم الوجبة الشهية | أكل بطعم بيحبه قلبك",
-  description: "أشهى صواني اللمة والعيلة، مشويات الشواية، والشاورما السوري في 6 أكتوبر - خدمة توصيل وتيك أواي وصالة",
+  title: "مطعم الوجبة الشهية | مشويات وصواني وشاورما على أصولها",
+  description: "أشهى صواني اللمة والعيلة، مشويات الشواية، والشاورما السوري المحمصة في 6 أكتوبر - خدمة توصيل وتيك أواي وصالة",
   icons: {
     icon: "/logo.jpg",
     apple: "/logo.jpg",
@@ -35,17 +28,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="ar"
       dir="rtl"
-      className={`${cairo.variable} ${playfair.variable}`}
+      className={cairo.variable}
       suppressHydrationWarning
     >
       <body
-        className="min-h-screen bg-[#0D0A08] text-[#FFFFFF] antialiased selection:bg-[#DC2626] selection:text-white"
-        style={{ fontFamily: "var(--font-cairo), system-ui, -apple-system, sans-serif" }}
+        className="min-h-screen bg-[#FAF7F2] text-[#2B170E] antialiased selection:bg-[#C2410C] selection:text-white"
+        style={{ fontFamily: "var(--font-cairo), 'Segoe UI', Tahoma, sans-serif" }}
         suppressHydrationWarning
       >
         <LanguageProvider>
           <StaffProvider>
-            <div className="flex min-h-screen flex-col justify-between">
+            <div style={{ display: "flex", minHeight: "100vh", flexDirection: "column", justifyContent: "space-between" }}>
               <div>
                 <Navbar />
                 <main>{children}</main>

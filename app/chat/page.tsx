@@ -91,7 +91,7 @@ export default function ChatPage() {
           </div>
           <div>
             <h1 className="font-black text-[#2B170E] text-lg">شات الفريق 💬</h1>
-            <p className="text-xs text-[#7E5E49]">التواصل الداخلي بين طاقم عمل Waffle House 🧇🍰</p>
+            <p className="text-xs text-[#7E5E49]">التواصل الداخلي بين طاقم عمل الوجبة الشهية 🧇🍰</p>
           </div>
         </div>
         <Link

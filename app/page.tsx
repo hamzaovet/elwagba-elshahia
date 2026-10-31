@@ -5,13 +5,13 @@ import Link from "next/link";
 import { playSound } from "@/lib/sounds";
 import CustomerAccountModal from "@/components/CustomerAccountModal";
 import CustomerChatWidget from "@/components/CustomerChatWidget";
-import { ALL_DELIVERY_ZONES, DEFAULT_ZONE, findZone, ZoneItem } from "@/lib/zones";
+import { ALL_DELIVERY_ZONES, DEFAULT_ZONE, ZoneItem } from "@/lib/zones";
 import {
   ShoppingCart, X, Plus, Minus, Search,
   MapPin, Phone, Clock, CheckCircle2, Loader2,
-  Bike, CreditCard, ChefHat, ChevronDown,
+  Bike, CreditCard, ChefHat, ChevronRight, ChevronLeft,
   Sparkles, Flame, Gift, Store, Utensils,
-  Share2, ShieldCheck, Tag, Heart, Info, ArrowRight
+  Share2, ShieldCheck, Tag, Heart, Info, ArrowLeft, ArrowRight
 } from "lucide-react";
 
 interface Product {
@@ -42,46 +42,95 @@ interface CartItem {
   selectedOption?: string | null;
 }
 
-const CATEGORY_ICONS: Record<string, string> = {
-  "الكل": "🍽️",
-  "صواني اللمة والعيلة": "👑",
-  "مشويات الشواية": "🔥",
-  "الشاورما السوري والعروض": "🌯",
-  "البروستد والكرسبي والوجبات": "🍗",
-  "الإضافات والصوصات والمقبلات": "🍟",
-  "All": "🍽️",
-  "Family Trays & Combos": "👑",
-  "Rotisserie & Grills": "🔥",
-  "Syrian Shawarma & Deals": "🌯",
-  "Broasted & Crispy Meals": "🍗",
-  "Sides, Sauces & Salads": "🍟",
-};
+// Hero Carousel Slides matching El Dahan aesthetic
+const HERO_SLIDES = [
+  {
+    id: "farha",
+    badge: "وفر 50 جنيه 🔥",
+    title: "عرض فرخة شواية كاملة",
+    subtitle: "فرخة شواية متحمرة ومظبوطة على الآخر مع أرز بسمتي أصفر + بطاطس + تومية + مخلل + عيش",
+    price: 370,
+    originalPrice: 420,
+    note: "العرض متاح أيام الثلاثاء والأربعاء والخميس",
+    image: "/menu/farha-shawaya.jpg",
+    cta: "اطلب العرض الآن",
+  },
+  {
+    id: "lamma",
+    badge: "الصينية الملكية الأكثر طلباً 👑",
+    title: "صينية لمة العيلة الفاخرة",
+    subtitle: "ربع كيلو شاورما فراخ سوري + 2 سيخ شيش طاووق + وجبة فاهيتا + أرز بسمتي + بطاطس + تومية + مخلل + كولسلو",
+    price: 580,
+    originalPrice: 640,
+    note: "تكفي حتى 5 أفراد مع الصوصات والخبز المحمص",
+    image: "/menu/lamma-family-tray.jpg",
+    cta: "اطلب الصينية الآن",
+  },
+  {
+    id: "nos-farha",
+    badge: "وفر 25 جنيه 🔥",
+    title: "عرض نص فرخة شواية",
+    subtitle: "نص فرخة شواية متحمرة ومظبوطة مع أرز بسمتي أصفر + بطاطس + تومية + مخلل + خبز",
+    price: 185,
+    originalPrice: 210,
+    note: "طعم مش هتقاومه - ساري الثلاثاء والأربعاء والخميس",
+    image: "/menu/nos-farha-promo.jpg",
+    cta: "اطلب الوجبة الآن",
+  },
+  {
+    id: "double-werk",
+    badge: "وفر 30 جنيه 🔥",
+    title: "عرض دبل ورك شواية",
+    subtitle: "2 ورك شواية متحمرين على الجريل مع أرز بسمتي أصفر + بطاطس + تومية + مخلل",
+    price: 170,
+    originalPrice: 200,
+    note: "ساري أيام الثلاثاء والأربعاء والخميس",
+    image: "/menu/double-werk-shawaya.jpg",
+    cta: "اطلب العرض الآن",
+  },
+  {
+    id: "shawarma",
+    badge: "طعم الصاج الأصلي 🌯",
+    title: "شاورما فراخ صاج عالجريل",
+    subtitle: "سندوتش شاورما فراخ صاج بـ 70 ج (بدل 90 ج) | وعرض 2 سندوتش شاورما بـ 150 ج (بدل 180 ج)",
+    price: 70,
+    originalPrice: 90,
+    note: "محمص بالزيت والزعتر مع التومية والمخلل",
+    image: "/menu/lamma-family-tray.jpg",
+    cta: "اطلب شاورما صاج",
+  },
+];
 
-const CATEGORY_SUBTITLES: Record<string, string> = {
-  "صواني اللمة والعيلة": "صواني ملكية تكفي كل العيلة والحبايب مع أرز بسمتي وصوصات",
-  "مشويات الشواية": "فراخ متبلة على الشواية والفحم مع عروض الثلاثاء والأربعاء والخميس 🔥",
-  "الشاورما السوري والعروض": "طعم الصاج الأصلي محمص عالجريل مع التومية والمخلل",
-  "البروستد والكرسبي والوجبات": "دجاج كرسبي مقرمش ذهبي ووجبات إسكالوب وفاهيتا",
-  "الإضافات والصوصات والمقبلات": "أرز بسمتي، بطاطس فارم فريتس، تومية وصوصات شهية",
-};
+const CATEGORY_NAMES = [
+  "الكل",
+  "عروض الوجبة الشهية",
+  "مشويات الشواية",
+  "صواني اللمة والعيلة",
+  "الشاورما السوري والعروض",
+  "البروستد والكرسبي والوجبات",
+  "الإضافات والصوصات والمقبلات",
+];
 
 const EXTRA_OPTIONS = [
-  { nameAr: "عادي كلاسيك", nameEn: "Regular", price: 0 },
-  { nameAr: "سبايسي حار نار 🔥", nameEn: "Spicy", price: 0 },
-  { nameAr: "تومية سورية إضافية", nameEn: "Extra Toumia", price: 15 },
-  { nameAr: "صوص سبايسي إضافي", nameEn: "Extra Spicy Sauce", price: 15 },
-  { nameAr: "مخلل مشكل إضافي", nameEn: "Extra Pickles", price: 10 },
-  { nameAr: "جبنة موتزاريلا سايحة 🧀", nameEn: "Extra Mozzarella", price: 25 },
-  { nameAr: "أرز بسمتي أصفر إضافي", nameEn: "Extra Rice", price: 40 },
-  { nameAr: "عيش صاج محمص (3 أرغفة)", nameEn: "Toasted Saj Bread", price: 10 },
+  { nameAr: "عادي كلاسيك", price: 0 },
+  { nameAr: "سبايسي حار نار 🔥", price: 0 },
+  { nameAr: "تومية سورية إضافية", price: 15 },
+  { nameAr: "صوص سبايسي إضافي", price: 15 },
+  { nameAr: "مخلل مشكل إضافي", price: 10 },
+  { nameAr: "جبنة موتزاريلا سايحة 🧀", price: 25 },
+  { nameAr: "أرز بسمتي أصفر زيادة", price: 40 },
+  { nameAr: "عيش صاج محمص (3 أرغفة)", price: 10 },
 ];
 
 export default function StorefrontPage() {
   const [products, setProducts] = useState<Product[]>([]);
-  const [categories, setCategories] = useState<string[]>([]);
   const [activeCategory, setActiveCategory] = useState("الكل");
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
+
+  // Auto-scrolling Carousel State
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [isCarouselPaused, setIsCarouselPaused] = useState(false);
 
   // Cart & Order State
   const [cart, setCart] = useState<CartItem[]>([]);
@@ -96,45 +145,38 @@ export default function StorefrontPage() {
   const [submitting, setSubmitting] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState<any>(null);
 
-  // Item customization modal
+  // Customization Modal State
   const [customizingProduct, setCustomizingProduct] = useState<Product | null>(null);
-  const [selectedOption, setSelectedOption] = useState<string>("عادي كلاسيك");
+  const [selectedOption, setSelectedOption] = useState("عادي كلاسيك");
   const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
   const [modalQty, setModalQty] = useState(1);
 
-  // Language & UI State
-  const [lang, setLang] = useState<"ar" | "en">("ar");
+  // Customer Account Modal State
   const [customerModalOpen, setCustomerModalOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
 
-  // Days promo check: is today Tuesday, Wednesday, or Thursday?
-  const todayDay = new Date().getDay(); // 0: Sun, 1: Mon, 2: Tue, 3: Wed, 4: Thu, 5: Fri, 6: Sat
-  const isPromoDay = todayDay === 2 || todayDay === 3 || todayDay === 4;
-
+  // Auto-scroll Carousel Effect every 3.5 seconds
   useEffect(() => {
-    setMounted(true);
+    if (isCarouselPaused) return;
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+    }, 3800);
+    return () => clearInterval(interval);
+  }, [isCarouselPaused]);
+
+  // Initial Load
+  useEffect(() => {
     fetchMenu();
     loadCartFromStorage();
 
     const handleCartOpen = () => setCartOpen(true);
     window.addEventListener("choco_open_cart", handleCartOpen);
+
     const handleCustomerOpen = () => setCustomerModalOpen(true);
     window.addEventListener("choco_open_customer", handleCustomerOpen);
-
-    const handleLangChange = (e: any) => {
-      if (e.detail) setLang(e.detail);
-    };
-    window.addEventListener("choco_lang_change", handleLangChange);
-
-    try {
-      const savedLang = localStorage.getItem("choco_lang") as "ar" | "en";
-      if (savedLang) setLang(savedLang);
-    } catch {}
 
     return () => {
       window.removeEventListener("choco_open_cart", handleCartOpen);
       window.removeEventListener("choco_open_customer", handleCustomerOpen);
-      window.removeEventListener("choco_lang_change", handleLangChange);
     };
   }, []);
 
@@ -146,9 +188,6 @@ export default function StorefrontPage() {
         const data = await res.json();
         const prods: Product[] = Array.isArray(data) ? data : (data.products || []);
         setProducts(prods);
-
-        const cats = ["الكل", ...Array.from(new Set(prods.map((p) => p.category)))];
-        setCategories(cats);
       }
     } catch (err) {
       console.error("Failed to fetch menu:", err);
@@ -163,7 +202,6 @@ export default function StorefrontPage() {
       if (saved) {
         const parsed = JSON.parse(saved);
         setCart(parsed);
-        updateCartCount(parsed);
       }
     } catch {}
   }
@@ -171,19 +209,12 @@ export default function StorefrontPage() {
   function saveCartToStorage(updated: CartItem[]) {
     try {
       localStorage.setItem("wagba_cart", JSON.stringify(updated));
-      updateCartCount(updated);
-    } catch {}
-  }
-
-  function updateCartCount(items: CartItem[]) {
-    const totalQty = items.reduce((sum, item) => sum + item.qty, 0);
-    try {
+      const totalQty = updated.reduce((s, i) => s + i.qty, 0);
       localStorage.setItem("choco_cart_count", String(totalQty));
       window.dispatchEvent(new Event("choco_cart_update"));
     } catch {}
   }
 
-  // Calculate product active price taking promo into account
   function getProductPrice(prod: Product): number {
     if (prod.promoActive && prod.promoPrice) {
       return prod.promoPrice;
@@ -262,7 +293,6 @@ export default function StorefrontPage() {
     saveCartToStorage([]);
   }
 
-  // Subtotal & Totals
   const cartSubtotal = cart.reduce((sum, i) => sum + i.unitPrice * i.qty, 0);
   const deliveryFee = orderType === "delivery" ? selectedZone.fee : 0;
   const cartTotal = cartSubtotal + deliveryFee;
@@ -317,7 +347,6 @@ export default function StorefrontPage() {
         setOrderSuccess(data);
         clearCart();
 
-        // Direct WhatsApp owner alert if enabled
         if (data.whatsappNotify?.enabled && data.whatsappNotify.waUrl) {
           window.open(data.whatsappNotify.waUrl, "_blank");
         }
@@ -332,295 +361,374 @@ export default function StorefrontPage() {
     }
   }
 
-  // Filtered menu
+  // Filter products by category & search
   const filteredProducts = products.filter((p) => {
-    const matchesCat = activeCategory === "الكل" || p.category === activeCategory;
-    const query = searchQuery.trim().toLowerCase();
+    let matchesCat = true;
+    if (activeCategory === "عروض الوجبة الشهية") {
+      matchesCat = Boolean(p.promoActive || (p.originalPrice && p.originalPrice > p.basePrice));
+    } else if (activeCategory !== "الكل") {
+      matchesCat = p.category === activeCategory;
+    }
+
+    const q = searchQuery.trim().toLowerCase();
     const matchesSearch =
-      !query ||
-      p.nameAr.toLowerCase().includes(query) ||
-      p.nameEn.toLowerCase().includes(query) ||
-      (p.description && p.description.toLowerCase().includes(query));
+      !q ||
+      p.nameAr.toLowerCase().includes(q) ||
+      p.nameEn.toLowerCase().includes(q) ||
+      (p.description && p.description.toLowerCase().includes(q));
+
     return matchesCat && matchesSearch;
   });
 
   return (
-    <div className="min-h-screen bg-[#0D0A08] text-white selection:bg-[#DC2626] selection:text-white" dir={lang === "ar" ? "rtl" : "ltr"}>
+    <div style={{ backgroundColor: "#FAF7F2", minHeight: "100vh", color: "#2B170E", direction: "rtl" }}>
       {/* ══════════════════════════════════════════════════════════════
-          1. HERO HEADER — El Dahan Fiery Charcoal & Gold Luxury Aesthetic
+          1. EL DAHAN AUTO-SCROLLING HORIZONTAL HERO CAROUSEL
       ══════════════════════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden pt-8 pb-16 md:pt-16 md:pb-24 border-b border-[#F59E0B]/20 bg-gradient-to-b from-[#140F0C] via-[#0D0A08] to-[#0A0706]">
-        {/* Glow ambient background effects */}
-        <div className="absolute top-0 right-1/4 w-96 h-96 bg-red-600/15 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute top-1/3 left-1/4 w-96 h-96 bg-amber-500/10 rounded-full blur-3xl pointer-events-none" />
+      <section
+        style={{
+          maxWidth: "1340px",
+          margin: "20px auto 10px",
+          padding: "0 16px",
+          position: "relative",
+        }}
+        onMouseEnter={() => setIsCarouselPaused(true)}
+        onMouseLeave={() => setIsCarouselPaused(false)}
+      >
+        <div className="wagba-hero-container">
+          {/* Horizontal Sliding Track (Smooth GLIDE across slides) */}
+          <div
+            className="wagba-hero-track"
+            style={{
+              transform: `translateX(-${currentSlide * 100}%)`,
+            }}
+          >
+            {HERO_SLIDES.map((slide) => (
+              <div key={slide.id} className="wagba-hero-slide">
+                {/* Right Side: Plated Dish Image with Arabesque Frame */}
+                <div className="slide-image-col">
+                  <img
+                    src={slide.image}
+                    alt={slide.title}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      objectPosition: "center",
+                      transition: "transform 0.4s ease",
+                    }}
+                  />
+                  {/* Subtle Gradient Overlay */}
+                  <div
+                    style={{
+                      position: "absolute",
+                      inset: 0,
+                      background: "linear-gradient(to right, rgba(28, 18, 12, 0.35) 0%, transparent 60%)",
+                    }}
+                  />
+                </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="text-center max-w-3xl mx-auto">
-            {/* Sizzling Flame Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#1F1713] border border-[#DC2626]/40 shadow-lg shadow-red-900/20 mb-6">
-              <span className="w-2.5 h-2.5 rounded-full bg-[#DC2626] animate-pulse" />
-              <span className="text-xs md:text-sm font-black text-[#FBBF24] tracking-wide">
-                🔥 أكل بطعم بيحبه قلبك • GOOD FOOD BETTER MOOD
-              </span>
-            </div>
+                {/* Left Side: Calligraphy, Details & Pricing (El Dahan Authentic Layout) */}
+                <div className="slide-content-col">
+                  {/* Badge */}
+                  <div
+                    style={{
+                      display: "inline-flex",
+                      alignItems: "center",
+                      gap: "6px",
+                      padding: "4px 14px",
+                      borderRadius: "8px",
+                      backgroundColor: "#DC2626",
+                      color: "#FFFFFF",
+                      fontSize: "12px",
+                      fontWeight: 900,
+                      boxShadow: "0 2px 8px rgba(220, 38, 38, 0.3)",
+                    }}
+                  >
+                    <span>{slide.badge}</span>
+                  </div>
 
-            {/* Main Headline */}
-            <h1 className="text-3xl sm:text-5xl md:text-6xl font-black text-white tracking-tight leading-tight mb-4">
-              مطعم <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#DC2626] via-[#EA580C] to-[#F59E0B]">الوجبة الشهية</span>
-            </h1>
+                  {/* Main Title */}
+                  <h2
+                    style={{
+                      fontSize: "28px",
+                      fontWeight: 900,
+                      color: "#24140D",
+                      margin: 0,
+                      lineHeight: 1.25,
+                      fontFamily: "'Cairo', serif",
+                    }}
+                  >
+                    {slide.title}
+                  </h2>
 
-            <p className="text-base sm:text-lg md:text-xl text-[#D1D5DB] leading-relaxed mb-8 font-medium">
-              أشهى صواني اللمة والعيلة، مشويات الشواية المتبلة على الفحم، والشاورما السوري المحمصة عالجريل. بنحضرها طازجة لحظة طلبك في قلب 6 أكتوبر!
-            </p>
+                  {/* Subtitle / Composition */}
+                  <p
+                    style={{
+                      fontSize: "13.5px",
+                      color: "#6B5344",
+                      lineHeight: 1.6,
+                      margin: 0,
+                      fontWeight: 600,
+                      maxWidth: "460px",
+                    }}
+                  >
+                    {slide.subtitle}
+                  </p>
 
-            {/* Fast Order & Promo CTAs */}
-            <div className="flex flex-wrap items-center justify-center gap-3.5 mb-10">
-              <a
-                href="#menu"
-                onClick={() => playSound("click")}
-                className="btn-flame px-7 py-3.5 rounded-xl text-sm md:text-base font-black flex items-center gap-2"
-              >
-                <span>اطلب أونلاين الآن 🛵</span>
-              </a>
+                  {/* Price Banner */}
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "baseline",
+                      gap: "10px",
+                      marginTop: "6px",
+                    }}
+                  >
+                    <span style={{ fontSize: "32px", fontWeight: 900, color: "#C2410C" }}>
+                      {slide.price} <span style={{ fontSize: "18px" }}>جنيه</span>
+                    </span>
+                    {slide.originalPrice && (
+                      <span style={{ fontSize: "18px", color: "#9CA3AF", textDecoration: "line-through", fontWeight: 700 }}>
+                        {slide.originalPrice} جنيه
+                      </span>
+                    )}
+                  </div>
 
-              <a
-                href="#offers"
-                onClick={() => playSound("click")}
-                className="btn-gold px-6 py-3.5 rounded-xl text-sm md:text-base font-black flex items-center gap-2"
-              >
-                <span>عروض مشويات الشواية 🔥</span>
-              </a>
+                  {slide.note && (
+                    <span style={{ fontSize: "11px", fontWeight: 700, color: "#C6873E" }}>
+                      ⚡ {slide.note}
+                    </span>
+                  )}
 
+                  {/* Order Button */}
+                  <button
+                    onClick={() => {
+                      const match = products.find((p) => p.nameAr.includes(slide.title.replace("عرض ", "")));
+                      if (match) addToCartDirect(match);
+                      else {
+                        const el = document.getElementById("menu");
+                        if (el) el.scrollIntoView({ behavior: "smooth" });
+                      }
+                    }}
+                    style={{
+                      marginTop: "10px",
+                      padding: "12px 28px",
+                      borderRadius: "10px",
+                      backgroundColor: "#24140D",
+                      color: "#FBBF24",
+                      fontSize: "14px",
+                      fontWeight: 900,
+                      border: "1.5px solid #C6873E",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      boxShadow: "0 4px 14px rgba(36, 20, 13, 0.2)",
+                      transition: "all 0.2s",
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = "#DC2626";
+                      e.currentTarget.style.borderColor = "#DC2626";
+                      e.currentTarget.style.color = "#FFFFFF";
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = "#24140D";
+                      e.currentTarget.style.borderColor = "#C6873E";
+                      e.currentTarget.style.color = "#FBBF24";
+                    }}
+                  >
+                    <ShoppingCart size={16} />
+                    <span>{slide.cta}</span>
+                  </button>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Left Arrow Button */}
+          <button
+            onClick={() => {
+              playSound("click");
+              setCurrentSlide((prev) => (prev === 0 ? HERO_SLIDES.length - 1 : prev - 1));
+            }}
+            style={{
+              position: "absolute",
+              left: "14px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              width: "42px",
+              height: "42px",
+              borderRadius: "50%",
+              backgroundColor: "rgba(255, 255, 255, 0.95)",
+              border: "1px solid #EADBCC",
+              boxShadow: "0 4px 14px rgba(43, 23, 14, 0.15)",
+              color: "#24140D",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              zIndex: 10,
+              transition: "transform 0.15s",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-50%) scale(1.08)")}
+            onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(-50%) scale(1)")}
+          >
+            <ChevronLeft size={22} />
+          </button>
+
+          {/* Right Arrow Button */}
+          <button
+            onClick={() => {
+              playSound("click");
+              setCurrentSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+            }}
+            style={{
+              position: "absolute",
+              right: "14px",
+              top: "50%",
+              transform: "translateY(-50%)",
+              width: "42px",
+              height: "42px",
+              borderRadius: "50%",
+              backgroundColor: "rgba(255, 255, 255, 0.95)",
+              border: "1px solid #EADBCC",
+              boxShadow: "0 4px 14px rgba(43, 23, 14, 0.15)",
+              color: "#24140D",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              cursor: "pointer",
+              zIndex: 10,
+              transition: "transform 0.15s",
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-50%) scale(1.08)")}
+            onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(-50%) scale(1)")}
+          >
+            <ChevronRight size={22} />
+          </button>
+
+          {/* Dots Indicator */}
+          <div
+            style={{
+              position: "absolute",
+              bottom: "12px",
+              left: "50%",
+              transform: "translateX(-50%)",
+              display: "flex",
+              gap: "8px",
+              zIndex: 10,
+            }}
+          >
+            {HERO_SLIDES.map((_, idx) => (
               <button
-                onClick={() => {
-                  setActiveCategory("صواني اللمة والعيلة");
-                  const el = document.getElementById("menu");
-                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                key={idx}
+                onClick={() => setCurrentSlide(idx)}
+                style={{
+                  width: idx === currentSlide ? "24px" : "8px",
+                  height: "8px",
+                  borderRadius: "4px",
+                  backgroundColor: idx === currentSlide ? "#DC2626" : "#EADBCC",
+                  border: "none",
+                  cursor: "pointer",
+                  transition: "all 0.3s ease",
                 }}
-                className="px-5 py-3.5 rounded-xl text-sm font-bold bg-[#1A1410] border border-[#F59E0B]/30 text-[#FBBF24] hover:bg-[#251D18] transition"
-              >
-                صواني اللمة والعيلة 👑
-              </button>
-            </div>
-
-            {/* Address & Hotline Badge */}
-            <div className="inline-flex flex-wrap items-center justify-center gap-4 text-xs md:text-sm text-[#9CA3AF] bg-[#140F0C]/80 backdrop-blur-md px-5 py-2.5 rounded-2xl border border-white/5">
-              <div className="flex items-center gap-1.5 text-[#F59E0B]">
-                <MapPin className="w-4 h-4 text-[#DC2626]" />
-                <span>6 أكتوبر — الحي الثاني — شارع جيل 2000 (عمارة 661 مقابل مدرسة أم المؤمنين)</span>
-              </div>
-              <span className="hidden md:inline text-white/20">|</span>
-              <a href="tel:01019845220" className="flex items-center gap-1.5 text-white hover:text-[#F59E0B] font-bold">
-                <Phone className="w-4 h-4 text-[#22C55E]" />
-                <span dir="ltr">010 1984 5220</span>
-              </a>
-            </div>
+              />
+            ))}
           </div>
         </div>
       </section>
 
       {/* ══════════════════════════════════════════════════════════════
-          2. ROTISSERIE PROMOTIONS SHOWCASE (الثلاثاء والأربعاء والخميس)
+          2. EL DAHAN CALLIGRAPHY TITLE & ORNAMENTAL ARABESQUE BANNER
       ══════════════════════════════════════════════════════════════ */}
-      <section id="offers" className="py-12 border-b border-[#F59E0B]/15 bg-[#100C0A]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row items-start md:items-end justify-between mb-8 gap-4">
-            <div>
-              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-md bg-[#DC2626]/20 border border-[#DC2626]/40 text-[#EF4444] text-xs font-black uppercase mb-2">
-                <Flame className="w-3.5 h-3.5 animate-bounce" />
-                عروض الشواية التوفيرية الكبرى
-              </div>
-              <h2 className="text-2xl md:text-4xl font-black text-white">
-                عروض الثلاثاء والأربعاء والخميس 🔥
-              </h2>
-              <p className="text-xs md:text-sm text-[#9CA3AF] mt-1">
-                وفر حتى 50 جنيه على مشويات الشواية كاملة مع الأرز والبطاطس والتومية والعيش!
-              </p>
-            </div>
+      <section style={{ maxWidth: "1340px", margin: "30px auto 20px", padding: "0 16px", textAlign: "center" }}>
+        {/* Main Title matching Screenshot 2 */}
+        <h1 style={{
+          fontSize: "30px",
+          fontWeight: 900,
+          color: "#24140D",
+          margin: "0 0 16px",
+          letterSpacing: "0.5px",
+        }}>
+          مطعم الوجبة الشهية للمشويات والصواني
+        </h1>
 
-            <div className="px-4 py-2 rounded-xl bg-[#1C1511] border border-[#F59E0B]/30 text-xs font-bold text-[#FBBF24] flex items-center gap-2">
-              <Clock className="w-4 h-4 text-[#DC2626]" />
-              <span>{isPromoDay ? "✓ العرض ساري ومتاح للطلب اليوم!" : "العرض يتجدد أسبوعياً: الثلاثاء، الأربعاء، والخميس"}</span>
-            </div>
+        {/* Arabesque Flourished Divider Banner (Exact El Dahan Replica) */}
+        <div style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: "16px",
+          margin: "0 auto",
+        }}>
+          <div style={{ height: "1px", flex: 1, maxWidth: "320px", background: "linear-gradient(to left, #C6873E, transparent)" }} />
+
+          <div style={{
+            padding: "8px 24px",
+            borderRadius: "10px",
+            border: "1.5px solid #C6873E",
+            backgroundColor: "#FFFFFF",
+            boxShadow: "0 2px 10px rgba(43, 23, 14, 0.05)",
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "10px",
+          }}>
+            <span style={{ color: "#C6873E", fontSize: "14px" }}>❖</span>
+            <span style={{ fontSize: "16px", fontWeight: 900, color: "#24140D" }}>
+              عروض الوجبة الشهية
+            </span>
+            <span style={{ color: "#C6873E", fontSize: "14px" }}>❖</span>
           </div>
 
-          {/* Cards Grid of the 3 Promo Grills with Real Uploaded Posters */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Promo 1: فرخة شواية */}
-            <div className="wagba-card overflow-hidden group flex flex-col justify-between">
-              <div>
-                <div className="relative h-64 overflow-hidden bg-[#0A0706]">
-                  <img
-                    src="/menu/farha-shawaya.jpg"
-                    alt="فرخة شواية"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute top-3 right-3 badge-promo px-3 py-1 rounded-lg text-xs">
-                    وفر 50 جنيه 🔥
-                  </div>
-                  <div className="absolute bottom-3 right-3 left-3 bg-black/75 backdrop-blur-md px-3 py-1.5 rounded-lg text-[11px] text-[#FDE047] font-bold">
-                    مع أرز بسمتي + بطاطس + تومية + مخلل + عيش
-                  </div>
-                </div>
-
-                <div className="p-5">
-                  <h3 className="text-lg font-black text-white mb-1">فرخة شواية كاملة</h3>
-                  <p className="text-xs text-[#9CA3AF] leading-relaxed mb-4">
-                    متحمرة ومظبوطة على الآخر على سيخ الشواية الدوار بتتبيلتنا الخاصة الشهية.
-                  </p>
-
-                  <div className="flex items-baseline gap-2 mb-4">
-                    <span className="text-2xl font-black text-[#F59E0B]">370 ج.م</span>
-                    <span className="text-sm text-red-500 line-through font-bold">420 ج</span>
-                    <span className="text-[10px] bg-red-950/60 text-red-400 px-2 py-0.5 rounded border border-red-800/40">
-                      سعر العرض
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-5 pt-0">
-                <button
-                  onClick={() => {
-                    const item = products.find((p) => p.nameAr.includes("فرخة شواية كاملة"));
-                    if (item) addToCartDirect(item);
-                  }}
-                  className="w-full btn-flame py-2.5 rounded-xl text-xs font-black flex items-center justify-center gap-2"
-                >
-                  <ShoppingCart className="w-4 h-4" />
-                  <span>أضف بالعرض (370 ج)</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Promo 2: نص فرخة شواية */}
-            <div className="wagba-card overflow-hidden group flex flex-col justify-between">
-              <div>
-                <div className="relative h-64 overflow-hidden bg-[#0A0706]">
-                  <img
-                    src="/menu/nos-farha-promo.jpg"
-                    alt="نص فرخة شواية"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute top-3 right-3 badge-promo px-3 py-1 rounded-lg text-xs">
-                    وفر 25 جنيه 🔥
-                  </div>
-                  <div className="absolute bottom-3 right-3 left-3 bg-black/75 backdrop-blur-md px-3 py-1.5 rounded-lg text-[11px] text-[#FDE047] font-bold">
-                    رز بسمتي أصفر + بطاطس + تومية + مخلل + خبز
-                  </div>
-                </div>
-
-                <div className="p-5">
-                  <h3 className="text-lg font-black text-white mb-1">نص فرخة شواية</h3>
-                  <p className="text-xs text-[#9CA3AF] leading-relaxed mb-4">
-                    وجبة مشبعة ومتحمرة مظبوطة على الآخر بطعم مش هتقاومه أبداً.
-                  </p>
-
-                  <div className="flex items-baseline gap-2 mb-4">
-                    <span className="text-2xl font-black text-[#F59E0B]">185 ج.م</span>
-                    <span className="text-sm text-red-500 line-through font-bold">210 ج</span>
-                    <span className="text-[10px] bg-red-950/60 text-red-400 px-2 py-0.5 rounded border border-red-800/40">
-                      سعر العرض
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-5 pt-0">
-                <button
-                  onClick={() => {
-                    const item = products.find((p) => p.nameAr === "نص فرخة شواية");
-                    if (item) addToCartDirect(item);
-                  }}
-                  className="w-full btn-flame py-2.5 rounded-xl text-xs font-black flex items-center justify-center gap-2"
-                >
-                  <ShoppingCart className="w-4 h-4" />
-                  <span>أضف بالعرض (185 ج)</span>
-                </button>
-              </div>
-            </div>
-
-            {/* Promo 3: دبل ورك شواية */}
-            <div className="wagba-card overflow-hidden group flex flex-col justify-between">
-              <div>
-                <div className="relative h-64 overflow-hidden bg-[#0A0706]">
-                  <img
-                    src="/menu/double-werk-shawaya.jpg"
-                    alt="دبل ورك شواية"
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute top-3 right-3 badge-promo px-3 py-1 rounded-lg text-xs">
-                    وفر 30 جنيه 🔥
-                  </div>
-                  <div className="absolute bottom-3 right-3 left-3 bg-black/75 backdrop-blur-md px-3 py-1.5 rounded-lg text-[11px] text-[#FDE047] font-bold">
-                    2 ورك شواية + رز + بطاطس + تومية + مخلل
-                  </div>
-                </div>
-
-                <div className="p-5">
-                  <h3 className="text-lg font-black text-white mb-1">دبل ورك شواية</h3>
-                  <p className="text-xs text-[#9CA3AF] leading-relaxed mb-4">
-                    لعشاق الأوراك المتحمرة مع الأرز البسمتي بالبهارات والصوصات.
-                  </p>
-
-                  <div className="flex items-baseline gap-2 mb-4">
-                    <span className="text-2xl font-black text-[#F59E0B]">170 ج.م</span>
-                    <span className="text-sm text-red-500 line-through font-bold">200 ج</span>
-                    <span className="text-[10px] bg-red-950/60 text-red-400 px-2 py-0.5 rounded border border-red-800/40">
-                      سعر العرض
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="p-5 pt-0">
-                <button
-                  onClick={() => {
-                    const item = products.find((p) => p.nameAr.includes("دبل ورك"));
-                    if (item) addToCartDirect(item);
-                  }}
-                  className="w-full btn-flame py-2.5 rounded-xl text-xs font-black flex items-center justify-center gap-2"
-                >
-                  <ShoppingCart className="w-4 h-4" />
-                  <span>أضف بالعرض (170 ج)</span>
-                </button>
-              </div>
-            </div>
-          </div>
+          <div style={{ height: "1px", flex: 1, maxWidth: "320px", background: "linear-gradient(to right, #C6873E, transparent)" }} />
         </div>
       </section>
 
       {/* ══════════════════════════════════════════════════════════════
-          3. FULL INTERACTIVE MENU & TRAY BROWSER
+          3. CATEGORIES TABS & LIVE SEARCH BAR
       ══════════════════════════════════════════════════════════════ */}
-      <section id="menu" className="py-14 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Section Header */}
-        <div className="text-center mb-8">
-          <h2 className="text-2xl md:text-4xl font-black text-white mb-2">
-            قائمة أكلات <span className="text-[#F59E0B]">الوجبة الشهية</span>
-          </h2>
-          <p className="text-xs md:text-sm text-[#9CA3AF] max-w-xl mx-auto">
-            اختر أكلتك المفضلة من صواني العيلة، مشويات الشواية، شاورما الصاج السوري والبروستد، وأضف إضافاتك المميزة
-          </p>
-        </div>
-
-        {/* Search Bar */}
-        <div className="max-w-md mx-auto mb-8 relative">
-          <Search className="w-5 h-5 absolute top-1/2 -translate-y-1/2 right-3.5 text-[#9CA3AF]" />
+      <section id="menu" style={{ maxWidth: "1340px", margin: "20px auto 30px", padding: "0 16px" }}>
+        {/* Search Input */}
+        <div style={{
+          maxWidth: "480px",
+          margin: "0 auto 20px",
+          position: "relative",
+        }}>
+          <Search size={18} style={{ position: "absolute", top: "50%", transform: "translateY(-50%)", right: "14px", color: "#8C6A53" }} />
           <input
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="ابحث بالاسم: صينية، شواية، شاورما، بروستد..."
-            className="w-full h-11 pr-11 pl-4 rounded-xl bg-[#17120F] border border-[#F59E0B]/25 text-white placeholder-[#6B7280] text-sm focus:outline-none focus:border-[#F59E0B] transition"
+            placeholder="ابحث في قائمة المشويات، الصواني، الشاورما، السندوتشات..."
+            style={{
+              width: "100%",
+              height: "44px",
+              padding: "0 44px 0 16px",
+              borderRadius: "12px",
+              backgroundColor: "#FFFFFF",
+              border: "1.5px solid #EADBCC",
+              color: "#24140D",
+              fontSize: "13.5px",
+              fontWeight: 700,
+              outline: "none",
+              boxShadow: "0 2px 8px rgba(43, 23, 14, 0.04)",
+              boxSizing: "border-box",
+            }}
           />
         </div>
 
-        {/* Category Pills Slider (Wrapped & Responsive) */}
-        <div className="flex flex-wrap items-center justify-center gap-2.5 mb-10">
-          {categories.map((cat) => {
+        {/* Category Pills Slider (El Dahan Style) */}
+        <div style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexWrap: "wrap",
+          gap: "10px",
+          marginBottom: "30px",
+        }}>
+          {CATEGORY_NAMES.map((cat) => {
             const isActive = activeCategory === cat;
-            const icon = CATEGORY_ICONS[cat] || "🍗";
             return (
               <button
                 key={cat}
@@ -628,47 +736,55 @@ export default function StorefrontPage() {
                   setActiveCategory(cat);
                   playSound("click");
                 }}
-                className={`px-4 py-2.5 rounded-xl text-xs md:text-sm font-black transition-all flex items-center gap-2 ${
-                  isActive
-                    ? "btn-flame shadow-lg scale-105"
-                    : "bg-[#17120F] text-[#D1D5DB] border border-[#F59E0B]/20 hover:border-[#F59E0B]/60 hover:text-white"
-                }`}
+                style={{
+                  padding: "8px 18px",
+                  borderRadius: "10px",
+                  fontSize: "13px",
+                  fontWeight: 800,
+                  cursor: "pointer",
+                  transition: "all 0.2s",
+                  border: isActive ? "1.5px solid #24140D" : "1px solid #EADBCC",
+                  backgroundColor: isActive ? "#24140D" : "#FFFFFF",
+                  color: isActive ? "#FBBF24" : "#4A2E1D",
+                  boxShadow: isActive ? "0 4px 12px rgba(36, 20, 13, 0.2)" : "0 2px 6px rgba(43, 23, 14, 0.03)",
+                }}
               >
-                <span>{icon}</span>
-                <span>{cat}</span>
+                {cat}
               </button>
             );
           })}
         </div>
 
-        {/* Category Subtitle */}
-        {CATEGORY_SUBTITLES[activeCategory] && (
-          <div className="text-center mb-6">
-            <span className="text-xs md:text-sm text-[#FBBF24] bg-[#1C1511] px-4 py-1.5 rounded-full border border-[#F59E0B]/20 font-bold">
-              ✨ {CATEGORY_SUBTITLES[activeCategory]}
-            </span>
-          </div>
-        )}
-
-        {/* Products Grid */}
+        {/* ══════════════════════════════════════════════════════════════
+            4. PRODUCTS GRID (Exact El Dahan Food Cards)
+        ══════════════════════════════════════════════════════════════ */}
         {loading ? (
-          <div className="flex flex-col items-center justify-center py-20 gap-3">
-            <Loader2 className="w-8 h-8 animate-spin text-[#F59E0B]" />
-            <span className="text-sm text-[#9CA3AF]">جاري تحميل أشهى الوجبات...</span>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "60px 0", gap: "10px" }}>
+            <Loader2 className="animate-spin text-[#C2410C]" size={36} />
+            <span style={{ fontSize: "14px", fontWeight: 700, color: "#6B5344" }}>جاري تحميل قائمة الوجبات...</span>
           </div>
         ) : filteredProducts.length === 0 ? (
-          <div className="text-center py-16 bg-[#140F0C] rounded-2xl border border-white/5">
-            <Utensils className="w-12 h-12 text-[#9CA3AF] mx-auto mb-3 opacity-40" />
-            <p className="text-base font-bold text-white mb-1">لا توجد وجبات تطابق بحثك حالياً</p>
-            <p className="text-xs text-[#9CA3AF]">جرب البحث بكلمة أخرى أو تصفح الأقسام</p>
+          <div style={{
+            textAlign: "center",
+            padding: "50px 20px",
+            backgroundColor: "#FFFFFF",
+            borderRadius: "16px",
+            border: "1px solid #EADBCC",
+          }}>
+            <Utensils size={40} color="#C6873E" style={{ margin: "0 auto 10px", opacity: 0.5 }} />
+            <h3 style={{ fontSize: "16px", fontWeight: 800, color: "#24140D" }}>لا توجد وجبات تطابق هذا التصنيف</h3>
+            <p style={{ fontSize: "12px", color: "#6B5344" }}>تصفح قسماً آخر أو ابحث بكلمة ثانية</p>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(290px, 1fr))",
+            gap: "24px",
+          }}>
             {filteredProducts.map((prod) => {
               const activePrice = getProductPrice(prod);
               const hasDiscount = prod.originalPrice && prod.originalPrice > activePrice;
 
-              // Parse tray components if any
               let trayItems: string[] = [];
               if (prod.trayComponents) {
                 try {
@@ -677,76 +793,160 @@ export default function StorefrontPage() {
               }
 
               return (
-                <div key={prod.id} className="wagba-card overflow-hidden flex flex-col justify-between group">
+                <div
+                  key={prod.id}
+                  className="eldahan-card"
+                  style={{
+                    backgroundColor: "#FFFFFF",
+                    borderRadius: "16px",
+                    border: "1px solid #EADBCC",
+                    boxShadow: "0 3px 12px rgba(43, 23, 14, 0.05)",
+                    overflow: "hidden",
+                    display: "flex",
+                    flexDirection: "column",
+                    justifyContent: "space-between",
+                    transition: "transform 0.2s, box-shadow 0.2s, border-color 0.2s",
+                  }}
+                >
                   <div>
-                    {/* Image & Badges */}
-                    <div className="relative h-56 overflow-hidden bg-[#0A0706]">
+                    {/* Food Photo Container */}
+                    <div style={{
+                      position: "relative",
+                      height: "210px",
+                      backgroundColor: "#1C120C",
+                      overflow: "hidden",
+                    }}>
                       <img
                         src={prod.image || "/menu/lamma-family-tray.jpg"}
                         alt={prod.nameAr}
-                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        style={{
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          transition: "transform 0.3s ease",
+                        }}
                       />
 
-                      {/* Promo or Signature Badge */}
+                      {/* Discount Badge */}
                       {hasDiscount && (
-                        <div className="absolute top-3 right-3 badge-promo px-2.5 py-1 rounded-md text-[11px]">
-                          خصم {prod.originalPrice! - activePrice} ج 🔥
+                        <div style={{
+                          position: "absolute",
+                          top: "10px",
+                          right: "10px",
+                          padding: "3px 10px",
+                          borderRadius: "6px",
+                          backgroundColor: "#DC2626",
+                          color: "#FFFFFF",
+                          fontSize: "11px",
+                          fontWeight: 900,
+                          boxShadow: "0 2px 6px rgba(220, 38, 38, 0.4)",
+                        }}>
+                          وفر {prod.originalPrice! - activePrice} ج 🔥
                         </div>
                       )}
 
+                      {/* Tray Tag */}
                       {prod.category === "صواني اللمة والعيلة" && (
-                        <div className="absolute top-3 left-3 bg-[#D97706]/90 text-white font-black px-2.5 py-1 rounded-md text-[11px] flex items-center gap-1 shadow">
-                          <span>👑 صينية ملكية</span>
+                        <div style={{
+                          position: "absolute",
+                          top: "10px",
+                          left: "10px",
+                          padding: "3px 10px",
+                          borderRadius: "6px",
+                          backgroundColor: "#24140D",
+                          border: "1px solid #C6873E",
+                          color: "#FBBF24",
+                          fontSize: "11px",
+                          fontWeight: 900,
+                        }}>
+                          👑 صينية عائلية
                         </div>
                       )}
 
-                      {/* Category Tag */}
-                      <div className="absolute bottom-3 right-3 bg-black/75 backdrop-blur-md px-2.5 py-1 rounded-md text-[10px] text-[#F59E0B] font-bold">
+                      {/* Category Label */}
+                      <div style={{
+                        position: "absolute",
+                        bottom: "8px",
+                        right: "10px",
+                        padding: "2px 8px",
+                        borderRadius: "5px",
+                        backgroundColor: "rgba(0,0,0,0.75)",
+                        color: "#FAF7F2",
+                        fontSize: "10px",
+                        fontWeight: 700,
+                      }}>
                         {prod.category}
                       </div>
                     </div>
 
-                    {/* Details */}
-                    <div className="p-5">
-                      <h3 className="text-base md:text-lg font-black text-white mb-1.5 leading-snug">
+                    {/* Card Content */}
+                    <div style={{ padding: "16px" }}>
+                      <h3 style={{
+                        fontSize: "16px",
+                        fontWeight: 900,
+                        color: "#24140D",
+                        margin: "0 0 6px",
+                        lineHeight: 1.3,
+                      }}>
                         {prod.nameAr}
                       </h3>
 
                       {prod.description && (
-                        <p className="text-xs text-[#9CA3AF] leading-relaxed mb-3 line-clamp-2">
+                        <p style={{
+                          fontSize: "12px",
+                          color: "#6B5344",
+                          lineHeight: 1.5,
+                          margin: "0 0 10px",
+                          display: "-webkit-box",
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: "vertical",
+                          overflow: "hidden",
+                        }}>
                           {prod.description}
                         </p>
                       )}
 
-                      {/* Tray components chips */}
+                      {/* Tray items breakdown chips */}
                       {trayItems.length > 0 && (
-                        <div className="mb-4 pt-2 border-t border-white/5">
-                          <span className="text-[10px] font-bold text-[#F59E0B] block mb-1.5">مكونات الصينية:</span>
-                          <div className="flex flex-wrap gap-1.5">
-                            {trayItems.slice(0, 5).map((comp, idx) => (
-                              <span
-                                key={idx}
-                                className="text-[10px] bg-[#1F1713] text-[#D1D5DB] px-2 py-0.5 rounded border border-[#F59E0B]/20"
-                              >
-                                • {comp}
-                              </span>
-                            ))}
-                            {trayItems.length > 5 && (
-                              <span className="text-[10px] text-[#FBBF24] font-bold self-center">
-                                +{trayItems.length - 5} أصناف أخرى
-                              </span>
-                            )}
-                          </div>
+                        <div style={{
+                          display: "flex",
+                          flexWrap: "wrap",
+                          gap: "4px",
+                          marginBottom: "12px",
+                          paddingTop: "6px",
+                          borderTop: "1px dashed #EADBCC",
+                        }}>
+                          {trayItems.slice(0, 4).map((comp, cIdx) => (
+                            <span
+                              key={cIdx}
+                              style={{
+                                fontSize: "10px",
+                                fontWeight: 700,
+                                color: "#4A2E1D",
+                                backgroundColor: "#FAF7F2",
+                                border: "1px solid #EADBCC",
+                                padding: "2px 6px",
+                                borderRadius: "4px",
+                              }}
+                            >
+                              • {comp}
+                            </span>
+                          ))}
+                          {trayItems.length > 4 && (
+                            <span style={{ fontSize: "10px", fontWeight: 800, color: "#C2410C", alignSelf: "center" }}>
+                              +{trayItems.length - 4} أصناف
+                            </span>
+                          )}
                         </div>
                       )}
 
-                      {/* Price Display */}
-                      <div className="flex items-baseline gap-2 mt-2">
-                        <span className="text-xl md:text-2xl font-black text-[#F59E0B]">
-                          {activePrice} ج.م
+                      {/* Price Section */}
+                      <div style={{ display: "flex", alignItems: "baseline", gap: "8px", marginTop: "4px" }}>
+                        <span style={{ fontSize: "22px", fontWeight: 900, color: "#C2410C" }}>
+                          {activePrice} <span style={{ fontSize: "14px" }}>ج.م</span>
                         </span>
                         {hasDiscount && (
-                          <span className="text-xs text-red-500 line-through font-bold">
+                          <span style={{ fontSize: "13px", color: "#9CA3AF", textDecoration: "line-through", fontWeight: 700 }}>
                             {prod.originalPrice} ج
                           </span>
                         )}
@@ -754,21 +954,63 @@ export default function StorefrontPage() {
                     </div>
                   </div>
 
-                  {/* Add to Cart Actions */}
-                  <div className="p-5 pt-0 grid grid-cols-2 gap-2">
+                  {/* Card Bottom Actions */}
+                  <div style={{
+                    padding: "0 16px 16px",
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: "8px",
+                  }}>
                     <button
                       onClick={() => openCustomizeModal(prod)}
-                      className="py-2.5 rounded-xl text-xs font-bold bg-[#1C1511] border border-[#F59E0B]/30 text-[#FBBF24] hover:bg-[#251D18] transition flex items-center justify-center gap-1.5"
+                      style={{
+                        padding: "8px 10px",
+                        borderRadius: "8px",
+                        backgroundColor: "#FAF7F2",
+                        border: "1px solid #EADBCC",
+                        color: "#24140D",
+                        fontSize: "12px",
+                        fontWeight: 800,
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "4px",
+                      }}
                     >
-                      <Sparkles className="w-3.5 h-3.5 text-[#DC2626]" />
+                      <Sparkles size={13} color="#C2410C" />
                       <span>تخصيص 🌶️</span>
                     </button>
 
                     <button
                       onClick={() => addToCartDirect(prod)}
-                      className="btn-flame py-2.5 rounded-xl text-xs font-black flex items-center justify-center gap-1.5"
+                      style={{
+                        padding: "8px 10px",
+                        borderRadius: "8px",
+                        backgroundColor: "#24140D",
+                        border: "1px solid #24140D",
+                        color: "#FBBF24",
+                        fontSize: "12px",
+                        fontWeight: 900,
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "6px",
+                        transition: "all 0.18s",
+                      }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.backgroundColor = "#DC2626";
+                        e.currentTarget.style.borderColor = "#DC2626";
+                        e.currentTarget.style.color = "#FFFFFF";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.backgroundColor = "#24140D";
+                        e.currentTarget.style.borderColor = "#24140D";
+                        e.currentTarget.style.color = "#FBBF24";
+                      }}
                     >
-                      <ShoppingCart className="w-3.5 h-3.5" />
+                      <ShoppingCart size={13} />
                       <span>أضف للطلب</span>
                     </button>
                   </div>
@@ -780,41 +1022,85 @@ export default function StorefrontPage() {
       </section>
 
       {/* ══════════════════════════════════════════════════════════════
-          4. CUSTOMIZE ITEM MODAL (عادي / سبايسي + إضافات)
+          5. CUSTOMIZE MODAL (النكهات والإضافات)
       ══════════════════════════════════════════════════════════════ */}
       {customizingProduct && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
-          <div className="bg-[#17120F] border border-[#F59E0B]/30 rounded-2xl w-full max-w-md max-h-[90vh] overflow-hidden flex flex-col shadow-2xl">
+        <div style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 9999,
+          backgroundColor: "rgba(0, 0, 0, 0.75)",
+          backdropFilter: "blur(4px)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "20px",
+        }}>
+          <div style={{
+            backgroundColor: "#FFFFFF",
+            borderRadius: "18px",
+            border: "1px solid #EADBCC",
+            width: "100%",
+            maxWidth: "460px",
+            maxHeight: "90vh",
+            overflow: "hidden",
+            display: "flex",
+            flexDirection: "column",
+            boxShadow: "0 20px 45px rgba(43, 23, 14, 0.3)",
+          }}>
             {/* Header */}
-            <div className="p-4 border-b border-[#F59E0B]/20 flex items-center justify-between bg-[#140F0C]">
+            <div style={{
+              padding: "16px 20px",
+              borderBottom: "1px solid #EADBCC",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              backgroundColor: "#FAF7F2",
+            }}>
               <div>
-                <h3 className="text-base font-black text-white">{customizingProduct.nameAr}</h3>
-                <span className="text-xs text-[#F59E0B]">{getProductPrice(customizingProduct)} ج.م</span>
+                <h3 style={{ fontSize: "16px", fontWeight: 900, color: "#24140D", margin: 0 }}>
+                  {customizingProduct.nameAr}
+                </h3>
+                <span style={{ fontSize: "12px", color: "#C2410C", fontWeight: 800 }}>
+                  {getProductPrice(customizingProduct)} ج.م
+                </span>
               </div>
               <button
                 onClick={() => setCustomizingProduct(null)}
-                className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-[#9CA3AF]"
+                style={{
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  color: "#6B5344",
+                }}
               >
-                <X className="w-4 h-4" />
+                <X size={20} />
               </button>
             </div>
 
-            {/* Modal Body */}
-            <div className="p-5 overflow-y-auto space-y-5 flex-1 text-xs">
+            {/* Body */}
+            <div style={{ padding: "20px", overflowY: "auto", flex: 1, display: "flex", flexDirection: "column", gap: "16px" }}>
               {/* Flavor Selector */}
               <div>
-                <label className="font-bold text-[#F59E0B] block mb-2">النكهة الأساسية:</label>
-                <div className="grid grid-cols-2 gap-2">
+                <label style={{ fontSize: "12.5px", fontWeight: 800, color: "#24140D", display: "block", marginBottom: "8px" }}>
+                  النكهة الأساسية:
+                </label>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "8px" }}>
                   {["عادي كلاسيك", "سبايسي حار نار 🔥"].map((opt) => (
                     <button
                       key={opt}
                       type="button"
                       onClick={() => setSelectedOption(opt)}
-                      className={`py-2 px-3 rounded-xl font-bold border transition ${
-                        selectedOption === opt
-                          ? "bg-[#DC2626] border-[#DC2626] text-white shadow-md shadow-red-900/40"
-                          : "bg-[#1F1814] border-white/10 text-[#D1D5DB]"
-                      }`}
+                      style={{
+                        padding: "10px",
+                        borderRadius: "10px",
+                        fontWeight: 800,
+                        fontSize: "12px",
+                        cursor: "pointer",
+                        border: selectedOption === opt ? "1.5px solid #DC2626" : "1px solid #EADBCC",
+                        backgroundColor: selectedOption === opt ? "#DC2626" : "#FAF7F2",
+                        color: selectedOption === opt ? "#FFFFFF" : "#24140D",
+                      }}
                     >
                       {opt}
                     </button>
@@ -824,18 +1110,27 @@ export default function StorefrontPage() {
 
               {/* Extras Multi-select */}
               <div>
-                <label className="font-bold text-[#F59E0B] block mb-2">إضافات وصوصات مفضلة:</label>
-                <div className="space-y-1.5">
+                <label style={{ fontSize: "12.5px", fontWeight: 800, color: "#24140D", display: "block", marginBottom: "8px" }}>
+                  إضافات وصوصات مفضلة:
+                </label>
+                <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                   {EXTRA_OPTIONS.filter((e) => e.price > 0).map((extra) => {
                     const isSelected = selectedExtras.includes(extra.nameAr);
                     return (
                       <label
                         key={extra.nameAr}
-                        className={`flex items-center justify-between p-2.5 rounded-xl border cursor-pointer transition ${
-                          isSelected ? "bg-[#251B15] border-[#F59E0B]" : "bg-[#1A1410] border-white/5"
-                        }`}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "space-between",
+                          padding: "10px 12px",
+                          borderRadius: "10px",
+                          border: isSelected ? "1.5px solid #C6873E" : "1px solid #EADBCC",
+                          backgroundColor: isSelected ? "#FAF7F2" : "#FFFFFF",
+                          cursor: "pointer",
+                        }}
                       >
-                        <div className="flex items-center gap-2">
+                        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
                           <input
                             type="checkbox"
                             checked={isSelected}
@@ -846,11 +1141,11 @@ export default function StorefrontPage() {
                                 setSelectedExtras(selectedExtras.filter((x) => x !== extra.nameAr));
                               }
                             }}
-                            className="rounded accent-[#DC2626]"
+                            style={{ accentColor: "#DC2626" }}
                           />
-                          <span className="font-bold text-white">{extra.nameAr}</span>
+                          <span style={{ fontSize: "12px", fontWeight: 700, color: "#24140D" }}>{extra.nameAr}</span>
                         </div>
-                        <span className="text-[#FBBF24] font-black">+{extra.price} ج</span>
+                        <span style={{ fontSize: "12px", fontWeight: 900, color: "#C2410C" }}>+{extra.price} ج</span>
                       </label>
                     );
                   })}
@@ -858,21 +1153,19 @@ export default function StorefrontPage() {
               </div>
 
               {/* Quantity */}
-              <div className="flex items-center justify-between pt-2 border-t border-white/5">
-                <span className="font-bold text-[#D1D5DB]">الكمية المطلوبة:</span>
-                <div className="flex items-center gap-3 bg-[#140F0C] px-3 py-1.5 rounded-xl border border-white/10">
+              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", paddingTop: "10px", borderTop: "1px dashed #EADBCC" }}>
+                <span style={{ fontSize: "13px", fontWeight: 800, color: "#24140D" }}>الكمية:</span>
+                <div style={{ display: "flex", alignItems: "center", gap: "10px", backgroundColor: "#FAF7F2", padding: "4px 10px", borderRadius: "10px", border: "1px solid #EADBCC" }}>
                   <button
-                    type="button"
                     onClick={() => setModalQty(Math.max(1, modalQty - 1))}
-                    className="w-6 h-6 rounded bg-white/10 text-white font-bold"
+                    style={{ width: "26px", height: "26px", borderRadius: "6px", border: "none", backgroundColor: "#FFFFFF", cursor: "pointer", fontWeight: 900 }}
                   >
                     -
                   </button>
-                  <span className="font-black text-sm text-[#F59E0B]">{modalQty}</span>
+                  <span style={{ fontSize: "14px", fontWeight: 900, color: "#24140D" }}>{modalQty}</span>
                   <button
-                    type="button"
                     onClick={() => setModalQty(modalQty + 1)}
-                    className="w-6 h-6 rounded bg-white/10 text-white font-bold"
+                    style={{ width: "26px", height: "26px", borderRadius: "6px", border: "none", backgroundColor: "#FFFFFF", cursor: "pointer", fontWeight: 900 }}
                   >
                     +
                   </button>
@@ -880,11 +1173,18 @@ export default function StorefrontPage() {
               </div>
             </div>
 
-            {/* Modal Actions */}
-            <div className="p-4 border-t border-[#F59E0B]/20 bg-[#140F0C] flex items-center justify-between">
+            {/* Footer */}
+            <div style={{
+              padding: "16px 20px",
+              borderTop: "1px solid #EADBCC",
+              backgroundColor: "#FAF7F2",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}>
               <div>
-                <span className="text-[11px] text-[#9CA3AF] block">الإجمالي للصنف:</span>
-                <span className="text-lg font-black text-[#F59E0B]">
+                <span style={{ fontSize: "11px", color: "#6B5344", display: "block" }}>إجمالي الصنف:</span>
+                <span style={{ fontSize: "18px", fontWeight: 900, color: "#C2410C" }}>
                   {(getProductPrice(customizingProduct) +
                     selectedExtras.reduce((s, ex) => s + (EXTRA_OPTIONS.find((o) => o.nameAr === ex)?.price || 0), 0)) *
                     modalQty}{" "}
@@ -893,11 +1193,23 @@ export default function StorefrontPage() {
               </div>
 
               <button
-                type="button"
                 onClick={addCustomizedToCart}
-                className="btn-flame px-6 py-2.5 rounded-xl text-xs font-black flex items-center gap-2"
+                style={{
+                  padding: "10px 24px",
+                  borderRadius: "10px",
+                  backgroundColor: "#24140D",
+                  color: "#FBBF24",
+                  fontSize: "13px",
+                  fontWeight: 900,
+                  border: "none",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  boxShadow: "0 4px 12px rgba(36, 20, 13, 0.2)",
+                }}
               >
-                <ShoppingCart className="w-4 h-4" />
+                <ShoppingCart size={15} />
                 <span>أضف للطلب</span>
               </button>
             </div>
@@ -906,64 +1218,121 @@ export default function StorefrontPage() {
       )}
 
       {/* ══════════════════════════════════════════════════════════════
-          5. FLOATING CART & CHECKOUT DRAWER
+          6. FLOATING CART & CHECKOUT DRAWER
       ══════════════════════════════════════════════════════════════ */}
-      {/* Floating Trigger Pill */}
       {cart.length > 0 && !cartOpen && (
-        <div className="fixed bottom-6 left-6 right-6 md:left-auto md:right-8 z-40">
+        <div style={{
+          position: "fixed",
+          bottom: "24px",
+          left: "24px",
+          right: "24px",
+          maxWidth: "460px",
+          margin: "0 auto",
+          zIndex: 90,
+        }}>
           <button
             onClick={() => {
               playSound("click");
               setCartOpen(true);
             }}
-            className="w-full md:w-auto btn-flame px-6 py-3.5 rounded-2xl shadow-2xl flex items-center justify-between md:justify-start gap-4 border border-red-500/50 animate-bounce"
+            style={{
+              width: "100%",
+              padding: "14px 20px",
+              borderRadius: "16px",
+              backgroundColor: "#24140D",
+              border: "1.5px solid #C6873E",
+              color: "#FFFFFF",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              cursor: "pointer",
+              boxShadow: "0 10px 30px rgba(36, 20, 13, 0.4)",
+            }}
           >
-            <div className="flex items-center gap-2">
-              <ShoppingCart className="w-5 h-5 text-white" />
-              <span className="font-black text-sm">عرض عربة الطلبات ({cart.reduce((s, i) => s + i.qty, 0)})</span>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+              <ShoppingCart size={20} color="#FBBF24" />
+              <span style={{ fontSize: "14px", fontWeight: 900, color: "#FFFFFF" }}>
+                عرض عربة طلباتك ({cart.reduce((s, i) => s + i.qty, 0)})
+              </span>
             </div>
-            <div className="bg-black/40 px-3 py-1 rounded-xl text-xs font-black text-[#FDE047]">
+            <div style={{
+              backgroundColor: "#DC2626",
+              color: "#FFFFFF",
+              padding: "4px 12px",
+              borderRadius: "10px",
+              fontSize: "13px",
+              fontWeight: 900,
+            }}>
               {cartTotal} ج.م
             </div>
           </button>
         </div>
       )}
 
-      {/* Cart Drawer Overlay */}
+      {/* Cart Drawer */}
       {cartOpen && (
-        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex justify-end">
-          <div className="w-full max-w-md bg-[#140F0C] border-l border-[#F59E0B]/30 h-full flex flex-col shadow-2xl text-xs">
+        <div style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 9999,
+          backgroundColor: "rgba(0, 0, 0, 0.7)",
+          display: "flex",
+          justifyContent: "flex-end",
+        }}>
+          <div style={{
+            width: "100%",
+            maxWidth: "460px",
+            backgroundColor: "#FFFFFF",
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            boxShadow: "-10px 0 30px rgba(0, 0, 0, 0.25)",
+          }}>
             {/* Drawer Header */}
-            <div className="p-4 border-b border-[#F59E0B]/20 flex items-center justify-between bg-[#17120F]">
-              <div className="flex items-center gap-2">
-                <ShoppingCart className="w-5 h-5 text-[#DC2626]" />
-                <h3 className="text-base font-black text-white">عربة طلباتك</h3>
-                <span className="text-[11px] bg-red-950/60 text-red-400 px-2 py-0.5 rounded-full font-bold">
+            <div style={{
+              padding: "16px 20px",
+              backgroundColor: "#24140D",
+              color: "#FFFFFF",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}>
+              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <ShoppingCart size={20} color="#FBBF24" />
+                <h3 style={{ fontSize: "16px", fontWeight: 900, margin: 0 }}>عربة طلباتك</h3>
+                <span style={{ fontSize: "11px", backgroundColor: "#DC2626", padding: "2px 8px", borderRadius: "10px", fontWeight: 900 }}>
                   {cart.length} أصناف
                 </span>
               </div>
               <button
                 onClick={() => setCartOpen(false)}
-                className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-[#9CA3AF]"
+                style={{ background: "none", border: "none", color: "#FAF7F2", cursor: "pointer" }}
               >
-                <X className="w-4 h-4" />
+                <X size={20} />
               </button>
             </div>
 
             {/* Drawer Body */}
-            <div className="p-4 overflow-y-auto flex-1 space-y-4">
+            <div style={{ padding: "16px", overflowY: "auto", flex: 1, display: "flex", flexDirection: "column", gap: "14px" }}>
               {cart.length === 0 ? (
-                <div className="text-center py-20 text-[#9CA3AF]">
-                  <ShoppingCart className="w-12 h-12 mx-auto mb-2 opacity-30 text-[#F59E0B]" />
-                  <p className="font-bold text-white text-sm">عربتك فارغة حالياً</p>
-                  <p className="text-[11px] mt-1">تصفح المنيو وأضف وجباتك المفضلة</p>
+                <div style={{ textAlign: "center", padding: "60px 0", color: "#6B5344" }}>
+                  <ShoppingCart size={40} color="#C6873E" style={{ margin: "0 auto 10px", opacity: 0.4 }} />
+                  <p style={{ fontWeight: 800, fontSize: "14px", color: "#24140D" }}>عربتك فارغة حالياً</p>
+                  <p style={{ fontSize: "12px" }}>تصفح المنيو وأضف وجباتك المفضلة</p>
                 </div>
               ) : (
                 <>
                   {/* Service Mode Selector */}
-                  <div className="p-3 rounded-xl bg-[#1C1511] border border-[#F59E0B]/20">
-                    <span className="font-bold text-[#F59E0B] block mb-2">طريقة استلام الطلب:</span>
-                    <div className="grid grid-cols-3 gap-2">
+                  <div style={{
+                    padding: "12px",
+                    borderRadius: "12px",
+                    backgroundColor: "#FAF7F2",
+                    border: "1px solid #EADBCC",
+                  }}>
+                    <span style={{ fontSize: "12px", fontWeight: 800, color: "#24140D", display: "block", marginBottom: "8px" }}>
+                      طريقة استلام الطلب:
+                    </span>
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "6px" }}>
                       {[
                         { id: "delivery", label: "دليفري 🛵" },
                         { id: "takeaway", label: "تيك أواي 🛍️" },
@@ -973,11 +1342,16 @@ export default function StorefrontPage() {
                           key={mode.id}
                           type="button"
                           onClick={() => setOrderType(mode.id as any)}
-                          className={`py-2 rounded-lg font-bold text-center transition ${
-                            orderType === mode.id
-                              ? "bg-[#DC2626] text-white shadow"
-                              : "bg-[#140F0C] text-[#9CA3AF] border border-white/5"
-                          }`}
+                          style={{
+                            padding: "8px 4px",
+                            borderRadius: "8px",
+                            fontSize: "12px",
+                            fontWeight: 800,
+                            cursor: "pointer",
+                            border: orderType === mode.id ? "1.5px solid #24140D" : "1px solid #EADBCC",
+                            backgroundColor: orderType === mode.id ? "#24140D" : "#FFFFFF",
+                            color: orderType === mode.id ? "#FBBF24" : "#24140D",
+                          }}
                         >
                           {mode.label}
                         </button>
@@ -985,35 +1359,53 @@ export default function StorefrontPage() {
                     </div>
                   </div>
 
-                  {/* Items List */}
-                  <div className="space-y-2">
+                  {/* Cart Items List */}
+                  <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
                     {cart.map((item, idx) => (
-                      <div key={idx} className="p-3 rounded-xl bg-[#1A1410] border border-white/5 flex items-start justify-between gap-3">
-                        <div className="flex-1">
-                          <h4 className="font-black text-white text-xs">{item.product.nameAr}</h4>
+                      <div
+                        key={idx}
+                        style={{
+                          padding: "12px",
+                          borderRadius: "12px",
+                          backgroundColor: "#FAF7F2",
+                          border: "1px solid #EADBCC",
+                          display: "flex",
+                          alignItems: "flex-start",
+                          justifyContent: "space-between",
+                          gap: "10px",
+                        }}
+                      >
+                        <div style={{ flex: 1 }}>
+                          <h4 style={{ fontSize: "13px", fontWeight: 900, color: "#24140D", margin: "0 0 2px" }}>
+                            {item.product.nameAr}
+                          </h4>
                           {item.selectedOption && (
-                            <span className="text-[10px] text-[#DC2626] font-bold block">{item.selectedOption}</span>
+                            <span style={{ fontSize: "11px", color: "#DC2626", fontWeight: 700, display: "block" }}>
+                              {item.selectedOption}
+                            </span>
                           )}
                           {item.extras.length > 0 && (
-                            <span className="text-[10px] text-[#9CA3AF] block">+ {item.extras.join("، ")}</span>
+                            <span style={{ fontSize: "11px", color: "#6B5344", display: "block" }}>
+                              + {item.extras.join("، ")}
+                            </span>
                           )}
-                          <div className="text-xs font-black text-[#F59E0B] mt-1">
+                          <div style={{ fontSize: "13px", fontWeight: 900, color: "#C2410C", marginTop: "4px" }}>
                             {item.unitPrice * item.qty} ج.م
                           </div>
                         </div>
 
                         {/* Qty changer */}
-                        <div className="flex items-center gap-2 bg-[#140F0C] px-2 py-1 rounded-lg border border-white/10">
+                        <div style={{ display: "flex", alignItems: "center", gap: "6px", backgroundColor: "#FFFFFF", padding: "2px 8px", borderRadius: "8px", border: "1px solid #EADBCC" }}>
                           <button
                             onClick={() => updateItemQty(idx, -1)}
-                            className="w-5 h-5 rounded bg-white/10 text-white font-bold text-xs"
+                            style={{ background: "none", border: "none", cursor: "pointer", fontWeight: 900 }}
                           >
                             -
                           </button>
-                          <span className="font-bold text-[#F59E0B] text-xs">{item.qty}</span>
+                          <span style={{ fontSize: "12px", fontWeight: 900, color: "#24140D" }}>{item.qty}</span>
                           <button
                             onClick={() => updateItemQty(idx, 1)}
-                            className="w-5 h-5 rounded bg-white/10 text-white font-bold text-xs"
+                            style={{ background: "none", border: "none", cursor: "pointer", fontWeight: 900 }}
                           >
                             +
                           </button>
@@ -1023,23 +1415,27 @@ export default function StorefrontPage() {
                   </div>
 
                   {/* Checkout Form */}
-                  <form id="checkout-form" onSubmit={handleCheckout} className="space-y-3 pt-3 border-t border-white/10">
-                    <span className="font-black text-white block text-sm">بيانات العميل والتوصيل:</span>
+                  <form id="checkout-form" onSubmit={handleCheckout} style={{ display: "flex", flexDirection: "column", gap: "10px", marginTop: "8px", paddingTop: "12px", borderTop: "1px dashed #EADBCC" }}>
+                    <span style={{ fontSize: "13px", fontWeight: 900, color: "#24140D" }}>بيانات التوصيل والتواصل:</span>
 
                     <div>
-                      <label className="text-[#9CA3AF] block mb-1">اسم العميل:</label>
+                      <label style={{ fontSize: "11px", fontWeight: 700, color: "#6B5344", display: "block", marginBottom: "4px" }}>
+                        اسم العميل:
+                      </label>
                       <input
                         type="text"
                         required
                         value={customerName}
                         onChange={(e) => setCustomerName(e.target.value)}
                         placeholder="الاسم بالكامل"
-                        className="w-full h-9 px-3 rounded-lg bg-[#1F1814] border border-white/10 text-white text-xs"
+                        style={{ width: "100%", height: "38px", padding: "0 10px", borderRadius: "8px", border: "1px solid #EADBCC", fontSize: "12.5px", boxSizing: "border-box" }}
                       />
                     </div>
 
                     <div>
-                      <label className="text-[#9CA3AF] block mb-1">رقم الموبايل / واتساب:</label>
+                      <label style={{ fontSize: "11px", fontWeight: 700, color: "#6B5344", display: "block", marginBottom: "4px" }}>
+                        رقم الموبايل / واتساب:
+                      </label>
                       <input
                         type="tel"
                         required
@@ -1047,21 +1443,23 @@ export default function StorefrontPage() {
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
                         placeholder="010XXXXXXXX"
-                        className="w-full h-9 px-3 rounded-lg bg-[#1F1814] border border-white/10 text-white text-xs"
+                        style={{ width: "100%", height: "38px", padding: "0 10px", borderRadius: "8px", border: "1px solid #EADBCC", fontSize: "12.5px", boxSizing: "border-box" }}
                       />
                     </div>
 
                     {orderType === "delivery" && (
                       <>
                         <div>
-                          <label className="text-[#9CA3AF] block mb-1">منطقة التوصيل (6 أكتوبر والشيخ زايد):</label>
+                          <label style={{ fontSize: "11px", fontWeight: 700, color: "#6B5344", display: "block", marginBottom: "4px" }}>
+                            منطقة التوصيل (6 أكتوبر والشيخ زايد):
+                          </label>
                           <select
                             value={selectedZone.code}
                             onChange={(e) => {
                               const found = ALL_DELIVERY_ZONES.find((z) => z.code === e.target.value);
                               if (found) setSelectedZone(found);
                             }}
-                            className="w-full h-9 px-2 rounded-lg bg-[#1F1814] border border-white/10 text-white text-xs font-bold"
+                            style={{ width: "100%", height: "38px", padding: "0 8px", borderRadius: "8px", border: "1px solid #EADBCC", fontSize: "12px", fontWeight: 700, boxSizing: "border-box" }}
                           >
                             {ALL_DELIVERY_ZONES.map((z) => (
                               <option key={z.code} value={z.code}>
@@ -1072,35 +1470,41 @@ export default function StorefrontPage() {
                         </div>
 
                         <div>
-                          <label className="text-[#9CA3AF] block mb-1">العنوان بالتفصيل:</label>
+                          <label style={{ fontSize: "11px", fontWeight: 700, color: "#6B5344", display: "block", marginBottom: "4px" }}>
+                            العنوان بالتفصيل:
+                          </label>
                           <input
                             type="text"
                             required
                             value={address}
                             onChange={(e) => setAddress(e.target.value)}
                             placeholder="الشارع، رقم العمارة، الشقة، علامة مميزة"
-                            className="w-full h-9 px-3 rounded-lg bg-[#1F1814] border border-white/10 text-white text-xs"
+                            style={{ width: "100%", height: "38px", padding: "0 10px", borderRadius: "8px", border: "1px solid #EADBCC", fontSize: "12px", boxSizing: "border-box" }}
                           />
                         </div>
                       </>
                     )}
 
                     <div>
-                      <label className="text-[#9CA3AF] block mb-1">ملاحظات خاصة بالشيف:</label>
+                      <label style={{ fontSize: "11px", fontWeight: 700, color: "#6B5344", display: "block", marginBottom: "4px" }}>
+                        ملاحظات خاصة:
+                      </label>
                       <input
                         type="text"
                         value={notes}
                         onChange={(e) => setNotes(e.target.value)}
-                        placeholder="تومية زيادة، عيش مقرمش، بدون مخلل..."
-                        className="w-full h-9 px-3 rounded-lg bg-[#1F1814] border border-white/10 text-white text-xs"
+                        placeholder="تومية زيادة، عيش مقرمش..."
+                        style={{ width: "100%", height: "38px", padding: "0 10px", borderRadius: "8px", border: "1px solid #EADBCC", fontSize: "12px", boxSizing: "border-box" }}
                       />
                     </div>
 
                     <div>
-                      <label className="text-[#9CA3AF] block mb-1">طريقة الدفع:</label>
-                      <div className="grid grid-cols-2 gap-2">
+                      <label style={{ fontSize: "11px", fontWeight: 700, color: "#6B5344", display: "block", marginBottom: "4px" }}>
+                        طريقة الدفع:
+                      </label>
+                      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "6px" }}>
                         {[
-                          { id: "cash", label: "كاش 💵" },
+                          { id: "cash", label: "كاش عند الاستلام 💵" },
                           { id: "instapay", label: "إنستاباي ⚡" },
                           { id: "wallet", label: "محفظة كاش 📱" },
                           { id: "card", label: "فيزا / كارت 💳" },
@@ -1109,11 +1513,16 @@ export default function StorefrontPage() {
                             key={m.id}
                             type="button"
                             onClick={() => setPaymentMethod(m.id)}
-                            className={`py-2 rounded-lg font-bold transition ${
-                              paymentMethod === m.id
-                                ? "bg-[#DC2626] text-white"
-                                : "bg-[#1F1814] text-[#9CA3AF] border border-white/5"
-                            }`}
+                            style={{
+                              padding: "8px 4px",
+                              borderRadius: "8px",
+                              fontSize: "11px",
+                              fontWeight: 800,
+                              cursor: "pointer",
+                              border: paymentMethod === m.id ? "1.5px solid #24140D" : "1px solid #EADBCC",
+                              backgroundColor: paymentMethod === m.id ? "#24140D" : "#FFFFFF",
+                              color: paymentMethod === m.id ? "#FBBF24" : "#24140D",
+                            }}
                           >
                             {m.label}
                           </button>
@@ -1127,32 +1536,47 @@ export default function StorefrontPage() {
 
             {/* Drawer Footer Checkout Button */}
             {cart.length > 0 && (
-              <div className="p-4 border-t border-[#F59E0B]/20 bg-[#17120F] space-y-3">
-                <div className="space-y-1">
-                  <div className="flex justify-between text-[#9CA3AF]">
-                    <span>المجموع الفرعي:</span>
-                    <span>{cartSubtotal} ج</span>
+              <div style={{
+                padding: "16px 20px",
+                borderTop: "1px solid #EADBCC",
+                backgroundColor: "#FAF7F2",
+                display: "flex",
+                flexDirection: "column",
+                gap: "10px",
+              }}>
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "12px", color: "#6B5344" }}>
+                  <span>المجموع الفرعي:</span>
+                  <span>{cartSubtotal} ج</span>
+                </div>
+                {orderType === "delivery" && (
+                  <div style={{ display: "flex", justifyContent: "space-between", fontSize: "12px", color: "#6B5344" }}>
+                    <span>رسوم التوصيل ({selectedZone.nameAr}):</span>
+                    <span>{deliveryFee} ج</span>
                   </div>
-                  {orderType === "delivery" && (
-                    <div className="flex justify-between text-[#9CA3AF]">
-                      <span>خدمة التوصيل ({selectedZone.nameAr}):</span>
-                      <span>{deliveryFee} ج</span>
-                    </div>
-                  )}
-                  <div className="flex justify-between text-white font-black text-sm pt-1 border-t border-white/10">
-                    <span>الإجمالي المطلوب:</span>
-                    <span className="text-[#F59E0B] text-base">{cartTotal} ج.م</span>
-                  </div>
+                )}
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: "15px", fontWeight: 900, color: "#24140D", paddingTop: "6px", borderTop: "1px dashed #EADBCC" }}>
+                  <span>الإجمالي المطلوب:</span>
+                  <span style={{ color: "#C2410C" }}>{cartTotal} ج.م</span>
                 </div>
 
                 <button
                   type="submit"
                   form="checkout-form"
                   disabled={submitting}
-                  className="w-full btn-flame py-3 rounded-xl font-black text-sm flex items-center justify-center gap-2 shadow-lg shadow-red-900/40"
+                  style={{
+                    width: "100%",
+                    padding: "12px",
+                    borderRadius: "10px",
+                    backgroundColor: "#DC2626",
+                    color: "#FFFFFF",
+                    fontSize: "14px",
+                    fontWeight: 900,
+                    border: "none",
+                    cursor: "pointer",
+                    boxShadow: "0 4px 14px rgba(220, 38, 38, 0.4)",
+                  }}
                 >
-                  {submitting ? <Loader2 className="w-4 h-4 animate-spin" /> : <CheckCircle2 className="w-4 h-4" />}
-                  <span>{submitting ? "جاري تسجيل الطلب..." : "تأكيد الطلب وإرسال التفاصيل"}</span>
+                  {submitting ? "جاري تسجيل الطلب..." : "تأكيد الطلب وإرسال الأوردر 🚀"}
                 </button>
               </div>
             )}
@@ -1161,30 +1585,78 @@ export default function StorefrontPage() {
       )}
 
       {/* ══════════════════════════════════════════════════════════════
-          6. ORDER SUCCESS MODAL
+          7. ORDER SUCCESS MODAL
       ══════════════════════════════════════════════════════════════ */}
       {orderSuccess && (
-        <div className="fixed inset-0 z-50 bg-black/85 backdrop-blur-md flex items-center justify-center p-4">
-          <div className="bg-[#17120F] border border-[#22C55E]/40 rounded-2xl w-full max-w-md p-6 text-center shadow-2xl">
-            <div className="w-16 h-16 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center mx-auto mb-4 text-[#22C55E]">
-              <CheckCircle2 className="w-8 h-8" />
+        <div style={{
+          position: "fixed",
+          inset: 0,
+          zIndex: 9999,
+          backgroundColor: "rgba(0, 0, 0, 0.8)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "20px",
+        }}>
+          <div style={{
+            backgroundColor: "#FFFFFF",
+            borderRadius: "20px",
+            border: "1px solid #EADBCC",
+            maxWidth: "440px",
+            width: "100%",
+            padding: "28px 24px",
+            textAlign: "center",
+            boxShadow: "0 20px 50px rgba(0, 0, 0, 0.3)",
+          }}>
+            <div style={{
+              width: "60px",
+              height: "60px",
+              borderRadius: "50%",
+              backgroundColor: "rgba(34, 197, 94, 0.15)",
+              color: "#16A34A",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              margin: "0 auto 16px",
+            }}>
+              <CheckCircle2 size={36} />
             </div>
 
-            <h3 className="text-xl font-black text-white mb-1">تم تسجيل طلبكم بنجاح! 🔥</h3>
-            <p className="text-xs text-[#9CA3AF] mb-4">
-              شكراً لاختياركم مطعم الوجبة الشهية. طلبكم الآن في المطبخ للتحضير السريع.
+            <h3 style={{ fontSize: "18px", fontWeight: 900, color: "#24140D", margin: "0 0 6px" }}>
+              تم استلام طلبكم بنجاح! 🔥
+            </h3>
+            <p style={{ fontSize: "12.5px", color: "#6B5344", margin: "0 0 16px" }}>
+              شكراً لاختياركم مطعم الوجبة الشهية. طلبك الآن في المطبخ للتحضير.
             </p>
 
-            <div className="bg-[#140F0C] p-3 rounded-xl border border-white/5 text-xs text-[#FBBF24] font-black mb-5">
+            <div style={{
+              padding: "10px",
+              borderRadius: "10px",
+              backgroundColor: "#FAF7F2",
+              border: "1px solid #EADBCC",
+              fontSize: "13px",
+              fontWeight: 900,
+              color: "#C2410C",
+              marginBottom: "18px",
+            }}>
               رقم الأوردر: #{orderSuccess.orderNumber}
             </div>
 
-            <div className="space-y-2">
+            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
               <Link
                 href={`/receipt/${orderSuccess.orderId}`}
-                className="w-full btn-gold py-2.5 rounded-xl text-xs font-black flex items-center justify-center gap-2"
+                style={{
+                  padding: "12px",
+                  borderRadius: "10px",
+                  backgroundColor: "#24140D",
+                  color: "#FBBF24",
+                  fontSize: "13px",
+                  fontWeight: 900,
+                  textDecoration: "none",
+                  display: "block",
+                }}
               >
-                <span>عرض الفاتورة الرقمية والتتبع المباشر 📄</span>
+                عرض الفاتورة وتتبع الأوردر مباشرة 📄
               </Link>
 
               {orderSuccess.whatsappNotify?.waUrl && (
@@ -1192,25 +1664,45 @@ export default function StorefrontPage() {
                   href={orderSuccess.whatsappNotify.waUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full py-2.5 rounded-xl text-xs font-black bg-[#22C55E] text-white flex items-center justify-center gap-2"
+                  style={{
+                    padding: "12px",
+                    borderRadius: "10px",
+                    backgroundColor: "#22C55E",
+                    color: "#FFFFFF",
+                    fontSize: "13px",
+                    fontWeight: 900,
+                    textDecoration: "none",
+                    display: "block",
+                  }}
                 >
-                  <span>متابعة تفاصيل الطلب عبر واتساب 💬</span>
+                  متابعة الطلب عبر واتساب المطعم 💬
                 </a>
               )}
 
               <button
                 onClick={() => setOrderSuccess(null)}
-                className="w-full py-2 text-xs text-[#9CA3AF] hover:text-white"
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "#6B5344",
+                  fontSize: "12px",
+                  cursor: "pointer",
+                  marginTop: "6px",
+                }}
               >
-                العودة للمنيو
+                العودة للقائمة الرئيسية
               </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Modals & Live Widgets */}
-      <CustomerAccountModal isOpen={customerModalOpen} onClose={() => setCustomerModalOpen(false)} lang={lang} />
+      {/* Customer Account & Live Chat Modals */}
+      <CustomerAccountModal
+        isOpen={customerModalOpen}
+        onClose={() => setCustomerModalOpen(false)}
+        lang="ar"
+      />
       <CustomerChatWidget />
     </div>
   );

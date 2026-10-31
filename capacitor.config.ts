@@ -1,11 +1,11 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.wafflehouse.cairo',
-  appName: 'Waffle House',
+  appId: 'com.elwagba.elshahia',
+  appName: 'الوجبة الشهية',
   webDir: 'public',
   server: {
-    url: 'https://waffle-house-alpha.vercel.app',
+    url: 'https://elwagba-elshahia.vercel.app',
     cleartext: true,
   },
   android: {

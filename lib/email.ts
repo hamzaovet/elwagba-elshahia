@@ -24,7 +24,7 @@ export async function sendOtpEmail(to: string, name: string, code: string): Prom
       return { success: true };
     }
 
-    const fromAddress = `"Waffle House 🧇🍰" <${process.env.EMAIL_USER || "hamzaovet@gmail.com"}>`;
+    const fromAddress = `"الوجبة الشهية 🧇🍰" <${process.env.EMAIL_USER || "hamzaovet@gmail.com"}>`;
 
     const htmlContent = `
       <!DOCTYPE html>
@@ -43,7 +43,7 @@ export async function sendOtpEmail(to: string, name: string, code: string): Prom
       </head>
       <body>
         <div class="container">
-          <div class="logo">Waffle House</div>
+          <div class="logo">الوجبة الشهية</div>
           <div class="sub">أشهى الوافل البلجيكي والكيك والميني بان كيك</div>
           
           <h2 style="color: #2B170E; font-size: 20px; margin: 0 0 10px 0;">أهلاً بك يا ${name || "عميلنا العزيز"} 👋</h2>
@@ -54,8 +54,8 @@ export async function sendOtpEmail(to: string, name: string, code: string): Prom
           <p class="info">⚠️ الرمز صالح لمدة 10 دقائق فقط. لا تشارك هذا الرمز مع أي شخص.</p>
 
           <div class="footer">
-            تم إرسال هذا البريد تلقائياً من منصة Waffle House — مدينة حدائق القبة<br/>
-            للطلبات والاستفسارات: 01155175799
+            تم إرسال هذا البريد تلقائياً من منصة الوجبة الشهية — مدينة 6 أكتوبر<br/>
+            للطلبات والاستفسارات: 01019845220
           </div>
         </div>
       </body>
@@ -65,7 +65,7 @@ export async function sendOtpEmail(to: string, name: string, code: string): Prom
     await transporter.sendMail({
       from: fromAddress,
       to,
-      subject: `${code} هو رمز التحقق الخاص بك — Waffle House 🧇🍰`,
+      subject: `${code} هو رمز التحقق الخاص بك — الوجبة الشهية 🧇🍰`,
       html: htmlContent,
     });
 

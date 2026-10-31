@@ -68,12 +68,12 @@ export default function MenuAdminPage() {
     if (found?.nameEn) return found.nameEn;
     const map: Record<string, string> = {
       "الكل": "All",
-      "وافل": "Waffles",
-      "تشيز كيك": "Cheesecake",
-      "بان كيك": "Pancakes",
-      "ميلك شيك": "Milkshakes",
-      "سموزي": "Smoothies",
-      "بوبا": "Boba",
+      "عروض الوجبة الشهية": "Promos and Deals",
+      "مشويات الشواية": "Rotisserie and Grills",
+      "صواني اللمة والعيلة": "Family Trays",
+      "الشاورما السوري والعروض": "Syrian Shawarma",
+      "البروستد والكرسبي والوجبات": "Broasted and Crispy",
+      "الإضافات والصوصات والمقبلات": "Sides and Sauces",
     };
     return map[cat] || cat;
   };

@@ -115,7 +115,7 @@ export default function LoginPage() {
         <span>{lang === "ar" ? "English 🌐" : "عربي 🌐"}</span>
       </button>
 
-      {/* ── Brand Waffle House ── */}
+      {/* ── Brand الوجبة الشهية ── */}
       <div style={{ textAlign: "center", marginBottom: "22px" }}>
         <div
           style={{
@@ -133,8 +133,8 @@ export default function LoginPage() {
           }}
         >
           <img
-            src="/waffle-house-logo.jpg"
-            alt="Waffle House Logo"
+            src="/logo.jpg"
+            alt="الوجبة الشهية Logo"
             style={{ width: "100%", height: "100%", objectFit: "cover" }}
             onError={(e) => {
               (e.target as HTMLImageElement).src = "/logo.jpg";
@@ -151,7 +151,7 @@ export default function LoginPage() {
             textShadow: "0 2px 10px rgba(0,0,0,0.5)",
           }}
         >
-          وافل هاوس • Waffle House 🧇🏠
+          مطعم الوجبة الشهية 🔥🍗
         </h1>
         <p
           style={{
@@ -161,7 +161,7 @@ export default function LoginPage() {
             fontWeight: 700,
           }}
         >
-          {t("منظومة إدارة وتشغيل الفروع والمبيعات السحابية - فرع القاهرة", "Cloud ERP & Operations Platform - Cairo Branch")}
+          {t("منظومة إدارة وتشغيل الفروع والمبيعات السحابية - فرع 6 أكتوبر", "Cloud ERP & Operations Platform - Cairo Branch")}
         </p>
       </div>
 
